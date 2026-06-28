@@ -1,0 +1,14 @@
+namespace Holix.Models;
+
+public class User
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    
+    // Moneda estándar
+    public int Monedas { get; set; } = 0;
+    
+    // Moneda premium
+    public int Cukitis { get; set; } = 0;
+}

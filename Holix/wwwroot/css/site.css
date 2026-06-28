@@ -1,0 +1,128 @@
+:root {
+  --primary-color: #6366f1; /* Indigo */
+  --primary-hover: #4f46e5;
+  --bg-color: #0f172a;      /* Slate 900 */
+  --bg-surface: #1e293b;    /* Slate 800 */
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --border-color: #334155;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin-bottom: 0;
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+/* Glassmorphism Navbar */
+.navbar {
+  background: rgba(15, 23, 42, 0.8) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.navbar-brand, .nav-link {
+  color: var(--text-primary) !important;
+  font-weight: 600;
+}
+.nav-link:hover {
+  color: var(--primary-color) !important;
+}
+
+/* Typography & General Classes */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.text-accent {
+  background: linear-gradient(90deg, #818cf8, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.bg-surface {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+.btn-outline-primary {
+  color: var(--text-primary);
+  border-color: var(--primary-color);
+}
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Cards & Services */
+.service-card, .project-card, .testimonial-card {
+  transition: all 0.3s ease;
+}
+.service-card:hover, .project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  border-color: var(--primary-color);
+}
+.service-icon {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+/* Forms */
+.form-control, .form-select {
+  background-color: var(--bg-color);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  border-radius: 8px;
+}
+.form-control:focus {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+}
+
+/* Accordion */
+.accordion-item {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+}
+.accordion-button {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+}
+.accordion-button:not(.collapsed) {
+  background-color: rgba(99, 102, 241, 0.1);
+  color: var(--primary-color);
+}
+.accordion-button::after {
+  filter: invert(1);
+}
+
+/* Custom Footer */
+.footer {
+  border-top: 1px solid var(--border-color) !important;
+  color: var(--text-secondary) !important;
+}

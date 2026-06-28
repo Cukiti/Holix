@@ -1,0 +1,207 @@
+@model Holix.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "Digital Agency";
+}
+
+<!-- Hero Section (RF-01) -->
+<section id="home" class="d-flex align-items-center justify-content-center" style="min-height: 100vh; padding-top: 80px;">
+    <div class="container text-center">
+        <h1 class="display-2 fw-bolder mb-4">Smart Ideas for your <br><span class="text-accent">Brand are Here</span></h1>
+        <p class="lead text-secondary mb-5 mx-auto" style="max-width: 600px;">
+            We are a creative agency focused on creating meaningful experiences and digital products that grow your business.
+        </p>
+        <div>
+            <a href="#services" class="btn btn-outline-primary me-3">Discover More</a>
+            <a href="#contact" class="btn btn-primary">Let's Talk</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section (RF-02) -->
+<section id="about" class="py-5 bg-surface mt-5">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <h2 class="text-accent mb-3">10+ Years Experience</h2>
+                <h3 class="mb-4">We are a team of passionate creators.</h3>
+                <p class="text-secondary">
+                    Our digital agency has a track record of delivering high-quality, innovative solutions. We focus on three main pillars: Strategy, Design, and Technology.
+                </p>
+                <ul class="list-unstyled mt-4 text-secondary">
+                    <li class="mb-2"><i class="fa-solid fa-check text-primary me-2"></i> Innovative Solutions</li>
+                    <li class="mb-2"><i class="fa-solid fa-check text-primary me-2"></i> Data-driven Strategies</li>
+                    <li><i class="fa-solid fa-check text-primary me-2"></i> Unmatched Quality</li>
+                </ul>
+            </div>
+            <div class="col-md-6 text-center">
+                <div class="p-5 bg-color rounded-circle d-inline-flex align-items-center justify-content-center" style="width:300px;height:300px; border: 2px solid var(--primary-color);">
+                    <i class="fa-solid fa-rocket fa-5x text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section (RF-03) -->
+<section id="services" class="py-5 my-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Our Services</h2>
+            <p class="text-secondary">What we do best to grow your brand.</p>
+        </div>
+        <div class="row g-4">
+            @if(Model != null && Model.Services != null) {
+                foreach (var service in Model.Services)
+                {
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card h-100 bg-surface border-0 service-card p-4 text-center">
+                            <i class="@service.Icon service-icon"></i>
+                            <h5 class="card-title text-white">@service.Title</h5>
+                            <p class="card-text text-secondary small">@service.Description</p>
+                            <a href="#" class="text-primary text-decoration-none mt-auto">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Section (RF-04) -->
+<section id="portfolio" class="py-5 bg-surface">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-accent">Latest Projects</h2>
+            <p class="text-secondary">Some of our best work.</p>
+        </div>
+        <div class="row g-4">
+            @if(Model != null && Model.Projects != null) {
+                foreach (var project in Model.Projects)
+                {
+                    <div class="col-md-6">
+                        <div class="card bg-color border-0 project-card overflow-hidden h-100">
+                            <img src="@project.ImageUrl" class="card-img-top" alt="@project.Title" style="height: 250px; object-fit: cover;">
+                            <div class="card-body p-4">
+                                <span class="badge bg-primary mb-2">@project.Category</span>
+                                <h4 class="card-title text-white">@project.Title</h4>
+                                <p class="text-secondary small mb-1"><strong>Client:</strong> @project.ClientName | <strong>Tech:</strong> @project.Technologies</p>
+                                <p class="card-text text-secondary mt-3">@project.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials (RF-05) & FAQ (RF-07) -->
+<section class="py-5 my-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6">
+                <h3 class="fw-bold mb-4">What Clients Say</h3>
+                @if(Model != null && Model.Testimonials != null) {
+                    foreach (var testimonial in Model.Testimonials)
+                    {
+                        <div class="bg-surface p-4 rounded-3 mb-4 testimonial-card">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="@testimonial.AvatarUrl" alt="Avatar" class="rounded-circle me-3" width="50" height="50">
+                                <div>
+                                    <h6 class="mb-0 text-white">@testimonial.ClientName</h6>
+                                    <small class="text-primary">@testimonial.Company</small>
+                                </div>
+                            </div>
+                            <p class="text-secondary fst-italic">"@testimonial.Content"</p>
+                            <div class="text-warning">
+                                @for(int i=0; i<testimonial.Rating; i++){ <i class="fa-solid fa-star"></i> }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            
+            <div class="col-lg-6">
+                <h3 class="fw-bold mb-4">FAQ</h3>
+                <div class="accordion" id="faqAccordion">
+                    @if(Model != null && Model.Faqs != null) {
+                        int index = 0;
+                        foreach (var faq in Model.Faqs)
+                        {
+                            <div class="accordion-item mb-2 border-0 rounded-3 overflow-hidden">
+                                <h2 class="accordion-header" id="heading-@index">
+                                    <button class="accordion-button @(index == 0 ? "" : "collapsed")" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@index">
+                                        @faq.Question
+                                    </button>
+                                </h2>
+                                <div id="collapse-@index" class="accordion-collapse collapse @(index == 0 ? "show" : "")" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body text-secondary bg-color">
+                                        @faq.Answer
+                                    </div>
+                                </div>
+                            </div>
+                            index++;
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form (RF-06) -->
+<section id="contact" class="py-5 bg-surface">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold text-accent">Let's Talk</h2>
+                    <p class="text-secondary">Ready to start your next project? Fill out the form below.</p>
+                </div>
+                
+                @if (Context.Request.Query["success"] == "true")
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        Your message has been sent successfully. We will contact you soon!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <form asp-action="SubmitContact" method="post" class="p-4 bg-color rounded-4 border border-secondary shadow-sm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary">Name / Identity *</label>
+                            <input asp-for="Contact.Name" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary">Company</label>
+                            <input asp-for="Contact.Company" class="form-control" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label text-secondary">Email *</label>
+                            <input asp-for="Contact.Email" type="email" class="form-control" required />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label text-secondary">Basic Requirement *</label>
+                            <select asp-for="Contact.Requirement" class="form-select" required>
+                                <option value="">Select an option...</option>
+                                <option value="Web Design">Web Design</option>
+                                <option value="App Development">App Development</option>
+                                <option value="Marketing">Marketing / Content</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label text-secondary">Project Details *</label>
+                            <textarea asp-for="Contact.Description" class="form-control" rows="4" required></textarea>
+                        </div>
+                        <div class="col-12 mt-4 text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">Submit Request</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
