@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Holix")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe1fcae09c56987e7c3124fa2c61e0aa52d775f6")]
 [assembly: System.Reflection.AssemblyProductAttribute("Holix")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Holix")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
