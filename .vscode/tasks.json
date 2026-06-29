@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "${env:USERPROFILE}\\.dotnet\\dotnet.exe",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}\\Holix\\Holix.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "options": {
+                "env": {
+                    "DOTNET_ROOT": "${env:USERPROFILE}\\.dotnet"
+                }
+            },
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

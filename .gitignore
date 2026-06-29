@@ -1,0 +1,17 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+
+# SQLite database
+*.db
+*.db-shm
+*.db-wal
+
+
+
+# OS
+[Dd]esktop.ini
+Thumbs.db
