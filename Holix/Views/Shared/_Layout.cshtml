@@ -7,6 +7,7 @@
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Holix.styles.css" asp-append-version="true" />
@@ -21,16 +22,16 @@
                 </button>
                 <div class="navbar-collapse collapse justify-content-center">
                     <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#blog">Blog</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="home">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="about">About</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="services">Services</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="features">Features</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="blog">Blog</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="contact">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="d-none d-lg-block">
-                    <a href="#contact" class="btn btn-outline-primary rounded-pill px-4" style="border-width: 2px;">LETS TALK</a>
+                    <a asp-controller="Home" asp-action="Index" asp-fragment="contact" class="btn btn-outline-primary rounded-pill px-4" style="border-width: 2px;">LETS TALK</a>
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
                         <div class="dropdown d-inline-block ms-2">
@@ -38,6 +39,8 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" asp-controller="Projects" asp-action="Index">Projects</a></li>
                                 <li><a class="dropdown-item" asp-controller="Services" asp-action="Index">Services</a></li>
+                                <li><a class="dropdown-item" asp-controller="Blog" asp-action="AdminList">Blog</a></li>
+                                <li><a class="dropdown-item" asp-controller="Contact" asp-action="Index">Messages</a></li>
                                 <li><a class="dropdown-item" asp-controller="Faqs" asp-action="Index">FAQs</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
@@ -127,6 +130,8 @@
     
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ duration: 800, once: true });</script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -18,4 +18,5 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Testimonial> Testimonials { get; set; }
     public DbSet<FaqItem> FaqItems { get; set; }
     public DbSet<ContactMessage> ContactMessages { get; set; }
+    public DbSet<BlogPost> BlogPosts { get; set; }
 }

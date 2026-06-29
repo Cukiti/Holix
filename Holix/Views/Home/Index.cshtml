@@ -33,7 +33,7 @@
 <section id="about" class="py-5 my-5">
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0 pe-lg-5">
+            <div class="col-lg-6 mb-5 mb-lg-0 pe-lg-5" data-aos="fade-right">
                 <div class="row g-3">
                     <div class="col-6 mt-4">
                         <div class="about-image" style="height: 300px;">
@@ -47,21 +47,21 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 ps-lg-5">
-                <h2 class="fw-bold fs-1 mb-4">We create some things, Design for your success future.</h2>
+            <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
+                <h2 class="fw-bold fs-1 mb-4 about-title">We create some things, Design for your success future.</h2>
                 <p class="text-secondary mb-4">
                     Lorem Ipsum is simply dummy text of free available in market the way printing and typesetting industry has been the industry's standard dummy text ever.
                 </p>
                 <ul class="list-unstyled mb-5">
-                    <li class="mb-3 d-flex align-items-center">
+                    <li class="mb-3 d-flex align-items-center" data-aos="fade-up" data-aos-delay="0">
                         <i class="fa-solid fa-circle text-primary me-3 fs-6" style="font-size: 0.6rem !important;"></i>
                         <span class="text-secondary fw-medium">Price of additional materials or parts (if needed)</span>
                     </li>
-                    <li class="mb-3 d-flex align-items-center">
+                    <li class="mb-3 d-flex align-items-center" data-aos="fade-up" data-aos-delay="100">
                         <i class="fa-solid fa-circle text-primary me-3 fs-6" style="font-size: 0.6rem !important;"></i>
                         <span class="text-secondary fw-medium">Transportation cost for carrying new materials/parts</span>
                     </li>
-                    <li class="mb-3 d-flex align-items-center">
+                    <li class="mb-3 d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
                         <i class="fa-solid fa-circle text-primary me-3 fs-6" style="font-size: 0.6rem !important;"></i>
                         <span class="text-secondary fw-medium">You will get 100% money back offer.</span>
                     </li>
@@ -70,7 +70,7 @@
                     <a href="#about" class="btn btn-primary px-4 py-2 me-4 mb-2">KNOW MORE</a>
                     <div class="d-flex align-items-center mb-2">
                         <div class="text-primary fs-2 me-2"><i class="fa-solid fa-trophy"></i></div>
-                        <span class="fw-bold text-primary fs-5">10+ Years Experience</span>
+                        <span class="fw-bold text-primary fs-5"><span class="count-up" data-target="10">0</span>+ Years Experience</span>
                     </div>
                 </div>
             </div>
@@ -185,6 +185,454 @@
                     </div>
                 </div>
             }
+        </div>
+    </div>
+</section>
+
+<!-- Blog Section -->
+<section id="blog" class="py-5 my-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold mb-2 d-block" data-aos="fade-down">-Our Blog-</span>
+            <h2 class="fw-bold fs-1 mb-3" id="latestPostsTitle" data-aos="fade-up">Latest Posts</h2>
+            <p class="text-secondary mx-auto" style="max-width: 500px;" data-aos="fade-up" data-aos-delay="100">
+                Insights and updates from our team.
+            </p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            @if (Model != null && Model.BlogPosts != null && Model.BlogPosts.Any())
+            {
+                var delays = new[] { 0, 150, 300 };
+                for (int i = 0; i < Model.BlogPosts.Count(); i++)
+                {
+                    var post = Model.BlogPosts.ElementAt(i);
+                    var delay = i < delays.Length ? delays[i] : 300;
+                    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="@delay">
+                        <div class="blog-card h-100">
+                            @if (!string.IsNullOrEmpty(post.ImageUrl))
+                            {
+                                <div class="blog-card-image">
+                                    <img src="@post.ImageUrl" alt="@post.Title">
+                                </div>
+                            }
+                            <div class="blog-card-body">
+                                <span class="blog-date text-secondary small">@post.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                                <h5 class="fw-bold mt-2 mb-2">
+                                    <a asp-controller="Blog" asp-action="Details" asp-route-slug="@post.Slug" class="text-dark text-decoration-none">@post.Title</a>
+                                </h5>
+                                <p class="text-secondary small mb-3">@post.Excerpt</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="small text-secondary">By @post.Author</span>
+                                    <a asp-controller="Blog" asp-action="Details" asp-route-slug="@post.Slug" class="text-primary fw-bold small text-decoration-none">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center py-5">
+                    <p class="text-secondary">No blog posts yet. Check back soon!</p>
+                </div>
+            }
+        </div>
+        <div class="text-center mt-5">
+            <a asp-controller="Blog" asp-action="Index" class="btn btn-primary px-4 py-2 btn-premium">VIEW ALL POSTS</a>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        (function() {
+            const counters = document.querySelectorAll('.count-up');
+            if (!counters.length) return;
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        var el = entry.target;
+                        var target = parseInt(el.getAttribute('data-target'), 10);
+                        if (el.dataset.counted) return;
+                        el.dataset.counted = 'true';
+                        var current = 0;
+                        var step = Math.ceil(target / 40);
+                        var timer = setInterval(function() {
+                            current += step;
+                            if (current >= target) {
+                                current = target;
+                                clearInterval(timer);
+                            }
+                            el.textContent = current;
+                        }, 30);
+                        observer.unobserve(el);
+                    }
+                });
+            }, { threshold: 0.5 });
+            counters.forEach(function(c) { observer.observe(c); });
+        })();
+
+        /* ── Contact Sweep Canvas ── */
+        (function() {
+            var canvas = document.getElementById('contactSweepCanvas');
+            if (!canvas) return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { canvas.style.display = 'none'; return; }
+            var ctx = canvas.getContext('2d');
+            var w, h, lines = [];
+            var MIN = 5, MAX = 8;
+            function resize() {
+                var rect = canvas.parentElement.getBoundingClientRect();
+                w = canvas.width = rect.width;
+                h = canvas.height = rect.height;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+            function create() {
+                var fromLeft = Math.random() < 0.5;
+                var len = w * (0.45 + Math.random() * 0.45);
+                return {
+                    cx: fromLeft ? -len : w + len,
+                    y: Math.random() * h,
+                    len: len,
+                    thick: 2 + Math.random() * 4,
+                    dir: fromLeft ? 1 : -1,
+                    speed: 1.5 + Math.random() * 2.5
+                };
+            }
+            function update() {
+                for (var i = lines.length - 1; i >= 0; i--) {
+                    var l = lines[i];
+                    l.cx += l.speed * l.dir;
+                    if ((l.dir > 0 && l.cx - l.len / 2 > w) || (l.dir < 0 && l.cx + l.len / 2 < 0)) { lines.splice(i, 1); }
+                }
+                while (lines.length < MIN + Math.floor(Math.random() * (MAX - MIN + 1))) { lines.push(create()); }
+            }
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                for (var i = 0; i < lines.length; i++) {
+                    var l = lines[i];
+                    var relPos = l.dir > 0 ? l.cx / w : (w - l.cx) / w;
+                    var opacity = 0;
+                    if (relPos < 0.25) opacity = Math.max(0, relPos / 0.25);
+                    else if (relPos > 0.75) opacity = Math.max(0, (1 - relPos) / 0.25);
+                    else opacity = 1;
+                    ctx.globalAlpha = opacity * 0.25;
+                    ctx.strokeStyle = 'rgb(46, 204, 113)';
+                    ctx.lineWidth = l.thick;
+                    ctx.beginPath();
+                    ctx.moveTo(l.cx - l.len / 2, l.y);
+                    ctx.lineTo(l.cx + l.len / 2, l.y);
+                    ctx.stroke();
+                }
+                ctx.globalAlpha = 1;
+            }
+            function loop() { update(); draw(); requestAnimationFrame(loop); }
+            loop();
+        })();
+
+        /* ── Contact Floating Shapes ── */
+        (function() {
+            var container = document.getElementById('contactShapes');
+            if (!container) return;
+            var shapes = ['circle', 'plus', 'diamond', 'hexagon'];
+            var symbols = ['&lt;/&gt;', '+', '&#9670;', '&#9671;', '&#8226;', '&infin;'];
+            for (var i = 0; i < 12; i++) {
+                var el = document.createElement('div');
+                el.className = 'tech-shape';
+                var size = 8 + Math.random() * 16;
+                el.style.cssText = 'width:' + size + 'px;height:' + size + 'px;left:' + (Math.random() * 90 + 5) + '%;top:' + (Math.random() * 90 + 5) + '%;' +
+                    'animation-duration:' + (18 + Math.random() * 20) + 's;animation-delay:' + (Math.random() * -20) + 's;' +
+                    'opacity:' + (0.04 + Math.random() * 0.06) + ';';
+                if (Math.random() < 0.5) {
+                    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    el.style.fontSize = size + 'px';
+                    el.style.color = '#22c55e';
+                } else {
+                    el.style.border = '1.5px solid #22c55e';
+                    el.style.borderRadius = Math.random() < 0.5 ? '50%' : '2px';
+                    if (Math.random() < 0.3) el.style.transform = 'rotate(' + (Math.floor(Math.random() * 4) * 45) + 'deg)';
+                }
+                container.appendChild(el);
+            }
+        })();
+
+        /* ── Contact Word Wrap ── */
+        (function() {
+            function wrapWords(root) {
+                var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                var nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+                nodes.forEach(function(node) {
+                    var text = node.textContent;
+                    var parts = text.split(/(\s+)/);
+                    if (parts.length < 2) return;
+                    var frag = document.createDocumentFragment();
+                    for (var i = 0; i < parts.length; i++) {
+                        if (parts[i].trim() === '') { frag.appendChild(document.createTextNode(parts[i])); }
+                        else { var span = document.createElement('span'); span.className = 'hover-word'; span.textContent = parts[i]; frag.appendChild(span); }
+                    }
+                    node.parentNode.replaceChild(frag, node);
+                });
+            }
+            var contact = document.getElementById('contact');
+            if (!contact) return;
+            var targets = contact.querySelectorAll('h1, h2, h3, h4, p, label, span, a, small, li');
+            targets.forEach(function(el) {
+                if (!el || el.closest('.hover-word') || el.classList.contains('contact-title') || el.querySelector('.hover-word')) return;
+                wrapWords(el);
+            });
+        })();
+
+        /* ── Contact Title Letter Cascade + Word Hover ── */
+        (function() {
+            var title = document.querySelector('.contact-title');
+            if (!title) return;
+            var text = title.textContent;
+            title.textContent = '';
+            var words = text.split(/(\s+)/);
+            var allLetters = [];
+            for (var w = 0; w < words.length; w++) {
+                var word = words[w];
+                if (word.trim() === '') {
+                    var sp = document.createElement('span');
+                    sp.className = 'letter-span';
+                    sp.innerHTML = '&nbsp;';
+                    title.appendChild(sp);
+                    allLetters.push(sp);
+                    continue;
+                }
+                var wordSpan = document.createElement('span');
+                wordSpan.className = 'hover-word';
+                for (var i = 0; i < word.length; i++) {
+                    var letterSpan = document.createElement('span');
+                    letterSpan.className = 'letter-span';
+                    letterSpan.textContent = word[i];
+                    wordSpan.appendChild(letterSpan);
+                    allLetters.push(letterSpan);
+                }
+                title.appendChild(wordSpan);
+            }
+            var obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        allLetters.forEach(function(span, idx) { setTimeout(function() { span.classList.add('visible'); }, idx * 40); });
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            obs.observe(title);
+        })();
+
+        /* ── Contact Icon Clicks ── */
+        (function() {
+            function setupIcon(selector, activeClass) {
+                var el = document.querySelector(selector);
+                if (!el) return;
+                el.addEventListener('click', function() {
+                    this.classList.remove(activeClass);
+                    void this.offsetWidth;
+                    this.classList.add(activeClass);
+                });
+                el.addEventListener('animationend', function() { this.classList.remove(activeClass); });
+            }
+            setupIcon('.icon-location', 'icon-bounce-active');
+            setupIcon('.icon-phone', 'icon-phone-active');
+            setupIcon('.icon-email', 'icon-email-active');
+            document.querySelectorAll('.icon-social').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    this.classList.remove('icon-social-active');
+                    void this.offsetWidth;
+                    this.classList.add('icon-social-active');
+                });
+                el.addEventListener('animationend', function() { this.classList.remove('icon-social-active'); });
+            });
+        })();
+
+        /* ── Contact Floating Labels ── */
+        (function() {
+            document.querySelectorAll('.floating-group .contact-input').forEach(function(input) {
+                function update() { input.closest('.floating-group').classList.toggle('has-value', input.value.trim() !== ''); }
+                input.addEventListener('input', update);
+                input.addEventListener('focus', update);
+                input.addEventListener('blur', update);
+                update();
+            });
+        })();
+
+        /* ── Blog Section Animations ── */
+        (function() {
+            var blog = document.getElementById('blog');
+            if (!blog) return;
+
+            /* Letter cascade on "Latest Posts" title */
+            var title = document.getElementById('latestPostsTitle');
+            if (title && !title.classList.contains('letter-cascaded')) {
+                title.classList.add('letter-cascaded');
+                var text = title.textContent;
+                title.textContent = '';
+                for (var i = 0; i < text.length; i++) {
+                    var ch = text[i];
+                    if (ch === ' ') {
+                        var space = document.createElement('span');
+                        space.className = 'letter-span';
+                        space.innerHTML = '&nbsp;';
+                        title.appendChild(space);
+                    } else {
+                        var span = document.createElement('span');
+                        span.className = 'letter-span';
+                        span.textContent = ch;
+                        title.appendChild(span);
+                    }
+                }
+                var letters = title.querySelectorAll('.letter-span');
+                var obs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            letters.forEach(function(span, idx) { setTimeout(function() { span.classList.add('visible'); }, idx * 35); });
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                obs.observe(title);
+            }
+
+            /* Word-by-word subtitle */
+            var subtitle = blog.querySelector('p[data-aos="fade-up"][data-aos-delay="100"]');
+            if (subtitle && !subtitle.classList.contains('word-cascaded')) {
+                subtitle.classList.add('word-cascaded');
+                var subText = subtitle.textContent;
+                var subWords = subText.split(/\s+/);
+                subtitle.textContent = '';
+                subWords.forEach(function(word, idx) {
+                    var span = document.createElement('span');
+                    span.className = 'subtitle-word';
+                    span.textContent = word;
+                    span.style.transitionDelay = (idx * 50) + 'ms';
+                    subtitle.appendChild(span);
+                    if (idx < subWords.length - 1) subtitle.appendChild(document.createTextNode(' '));
+                });
+                var subObs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.querySelectorAll('.subtitle-word').forEach(function(w) { w.classList.add('visible'); });
+                            subObs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                subObs.observe(subtitle);
+            }
+
+            /* Word-wrap all #blog text */
+            (function() {
+                function wrapWords(root) {
+                    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                    var nodes = [];
+                    while (walker.nextNode()) nodes.push(walker.currentNode);
+                    nodes.forEach(function(node) {
+                        var text = node.textContent;
+                        var parts = text.split(/(\s+)/);
+                        if (parts.length < 2) return;
+                        var frag = document.createDocumentFragment();
+                        for (var i = 0; i < parts.length; i++) {
+                            if (parts[i].trim() === '') { frag.appendChild(document.createTextNode(parts[i])); }
+                            else { var span = document.createElement('span'); span.className = 'hover-word'; span.textContent = parts[i]; frag.appendChild(span); }
+                        }
+                        node.parentNode.replaceChild(frag, node);
+                    });
+                }
+                var targets = blog.querySelectorAll('h1, h2, h3, h4, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+                targets.forEach(function(el) {
+                    if (!el || el.closest('.hover-word') || el.classList.contains('letter-span') || el.classList.contains('subtitle-word') || el.querySelector('.hover-word') || el.querySelector('.letter-span') || el.querySelector('.subtitle-word')) return;
+                    wrapWords(el);
+                });
+            })();
+        })();
+    </script>
+}
+
+<!-- Contact Section -->
+<section id="contact" class="py-5" style="background-color: #fafafa; position: relative; overflow: hidden;">
+    <canvas id="contactSweepCanvas"></canvas>
+    <div id="contactShapes"></div>
+    <div class="container py-5" style="position: relative; z-index: 1;">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold mb-2 d-block" data-aos="fade-up">-Contact Us-</span>
+            <h2 class="fw-bold fs-1 mb-3 contact-title">Let's Work Together</h2>
+            <p class="text-secondary mx-auto" style="max-width: 500px;" data-aos="fade-up" data-aos-delay="100">
+                Have a project in mind? Reach out and let's make it happen.
+            </p>
+        </div>
+        <div class="row justify-content-center mb-5 g-4">
+            <div class="col-md-4" data-aos="fade-left">
+                <div class="contact-card text-center">
+                    <div class="contact-icon-wrap icon-location"><i class="fa-solid fa-location-dot"></i></div>
+                    <h5 class="fw-bold mb-2">Address</h5>
+                    <p class="text-secondary small mb-0">4517 Washington Ave. Manchester, Kentucky 39495</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-left" data-aos-delay="100">
+                <div class="contact-card text-center">
+                    <div class="contact-icon-wrap icon-phone"><i class="fa-solid fa-phone"></i></div>
+                    <h5 class="fw-bold mb-2">Phone</h5>
+                    <p class="text-secondary small mb-0">+7894631546876</p>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-left" data-aos-delay="200">
+                <div class="contact-card text-center">
+                    <div class="contact-icon-wrap icon-email"><i class="fa-solid fa-envelope"></i></div>
+                    <h5 class="fw-bold mb-2">Email</h5>
+                    <p class="text-secondary small mb-0">info@hoolix.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <form asp-controller="Home" asp-action="SubmitContact" method="post" class="row g-4">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Contact.Id" />
+
+                    <div class="col-md-6 floating-group" data-aos="fade-up">
+                        <input asp-for="Contact.Name" class="form-control contact-input" placeholder=" " />
+                        <label asp-for="Contact.Name" class="form-label fw-bold small"></label>
+                        <span asp-validation-for="Contact.Name" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 floating-group" data-aos="fade-up" data-aos-delay="100">
+                        <input asp-for="Contact.Email" class="form-control contact-input" placeholder=" " />
+                        <label asp-for="Contact.Email" class="form-label fw-bold small"></label>
+                        <span asp-validation-for="Contact.Email" class="text-danger small"></span>
+                    </div>
+                    <div class="col-md-6 floating-group" data-aos="fade-up" data-aos-delay="200">
+                        <input asp-for="Contact.Company" class="form-control contact-input" placeholder=" " />
+                        <label asp-for="Contact.Company" class="form-label fw-bold small"></label>
+                    </div>
+                    <div class="col-md-6 floating-group" data-aos="fade-up" data-aos-delay="300">
+                        <select asp-for="Contact.Requirement" class="form-select contact-input">
+                            <option value="">Select a service...</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="App Development">App Development</option>
+                            <option value="UI/UX Design">UI/UX Design</option>
+                            <option value="Digital Marketing">Digital Marketing</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <label asp-for="Contact.Requirement" class="form-label fw-bold small"></label>
+                        <span asp-validation-for="Contact.Requirement" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12 floating-group" data-aos="fade-up" data-aos-delay="400">
+                        <textarea asp-for="Contact.Description" class="form-control contact-input" rows="4" placeholder=" "></textarea>
+                        <label asp-for="Contact.Description" class="form-label fw-bold small"></label>
+                        <span asp-validation-for="Contact.Description" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12 text-center" data-aos="fade-up" data-aos-delay="500">
+                        <button type="submit" class="btn btn-primary px-5 py-3 btn-premium-contact">SEND MESSAGE</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="text-center mt-5" data-aos="fade-up">
+            <div class="contact-icon-wrap icon-social d-inline-flex mx-2"><i class="fa-brands fa-facebook-f"></i></div>
+            <div class="contact-icon-wrap icon-social d-inline-flex mx-2"><i class="fa-brands fa-twitter"></i></div>
+            <div class="contact-icon-wrap icon-social d-inline-flex mx-2"><i class="fa-brands fa-instagram"></i></div>
+            <div class="contact-icon-wrap icon-social d-inline-flex mx-2"><i class="fa-brands fa-linkedin-in"></i></div>
         </div>
     </div>
 </section>

@@ -1,0 +1,431 @@
+@model Holix.Models.BlogPost
+@{
+    ViewData["Title"] = Model.Title;
+    var morePosts = ViewBag.MorePosts as List<Holix.Models.BlogPost> ?? new List<Holix.Models.BlogPost>();
+    string FormatViews(int views)
+    {
+        if (views >= 1000)
+            return (views / 1000.0).ToString("0.#") + "k";
+        return views.ToString();
+    }
+}
+
+<canvas id="bgCanvas"></canvas>
+<div id="scroll-progress"></div>
+
+<div class="blog-bg-circles">
+    <div class="blog-bg-circle blog-bg-circle-1"></div>
+    <div class="blog-bg-circle blog-bg-circle-2"></div>
+</div>
+
+<section class="blog-page-section">
+    <div class="container">
+        <div class="row justify-content-center position-relative">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="mb-4 post-meta">
+                    <span class="text-uppercase small text-primary fw-semibold tracking-wider">
+                        <i class="fa-regular fa-calendar me-1 icon-date"></i> @Model.PublishedAt.ToString("MMMM dd, yyyy")
+                    </span>
+                    <span class="text-secondary small mx-2">&middot;</span>
+                    <span class="text-secondary small">
+                        <i class="fa-regular fa-user me-1 icon-author"></i> @Model.Author
+                    </span>
+                    <span class="text-secondary small mx-2">&middot;</span>
+                    <span class="text-secondary small blog-views-detail">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: text-top;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <span class="ms-1">@FormatViews(Model.Views)</span>
+                    </span>
+                </div>
+
+                <h1 class="fw-bold display-5 mb-4 lh-1 post-title">@Model.Title</h1>
+
+                @if (!string.IsNullOrEmpty(Model.Excerpt))
+                {
+                    <p class="fs-5 text-secondary mb-5 lead post-excerpt">@Model.Excerpt</p>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="mb-5 rounded-4 overflow-hidden shadow-sm parallax-wrap">
+                        <div class="parallax-image" style="background-image: url('@Model.ImageUrl');"></div>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-5 rounded-4 overflow-hidden" style="height: 200px; background: linear-gradient(135deg, var(--primary-color), #059669);"></div>
+                }
+
+                <div class="blog-content fs-5">
+                    @Html.Raw(Model.Content)
+                </div>
+
+                <div id="content-end-marker"></div>
+
+                <hr class="my-5">
+
+                <div class="d-flex justify-content-center gap-2">
+                    <a asp-controller="Blog" asp-action="Index" class="btn btn-outline-primary rounded-pill px-4 btn-premium d-inline-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-arrow-left me-2"></i>Back to View All
+                    </a>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-3 btn-premium d-inline-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-home me-1"></i>Home
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@if (morePosts.Any())
+{
+    <section class="py-5 related-posts-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-title-line"></div>
+                    <h2 class="fw-bold fs-2 mb-4">More Posts</h2>
+                    <div class="row g-4">
+                        @for (int i = 0; i < morePosts.Count; i++)
+                        {
+                            var rp = morePosts[i];
+                            <div class="col-md-4" data-aos="fade-up" data-aos-delay="@(i * 100)">
+                                <div class="blog-card h-100">
+                                    @if (!string.IsNullOrEmpty(rp.ImageUrl))
+                                    {
+                                        <div class="blog-card-image">
+                                            <img src="@rp.ImageUrl" alt="@rp.Title">
+                                        </div>
+                                    }
+                                    <div class="blog-card-body">
+                                        <span class="blog-date text-secondary small">@rp.PublishedAt.ToString("MMM dd, yyyy")</span>
+                                        <h5 class="fw-bold mt-2 mb-2">
+                                            <a asp-controller="Blog" asp-action="Details" asp-route-slug="@rp.Slug" class="text-dark text-decoration-none">@rp.Title</a>
+                                        </h5>
+                                        <p class="text-secondary small mb-0">@rp.Excerpt</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+<div id="back-to-top" class="back-to-top-btn">
+    <i class="fa-solid fa-arrow-up"></i>
+</div>
+
+<div id="reading-toast" class="reading-toast">
+    <i class="fa-regular fa-circle-check me-2"></i> ¡Lo leíste todo! 🎉
+</div>
+
+@section Scripts {
+    <script>
+        (function() {
+            var curtain = document.createElement('div');
+            curtain.id = 'pageCurtain';
+            document.body.prepend(curtain);
+            requestAnimationFrame(function() {
+                curtain.style.transform = 'translateY(0)';
+            });
+            setTimeout(function() {
+                curtain.style.transition = 'transform 0.3s ease-out';
+                curtain.style.transform = 'translateY(-100%)';
+            }, 300);
+            setTimeout(function() {
+                curtain.remove();
+            }, 600);
+        })();
+
+        (function() {
+            var title = document.querySelector('.post-title');
+            if (title) {
+                var text = title.textContent;
+                title.textContent = '';
+                for (var i = 0; i < text.length; i++) {
+                    var ch = text[i];
+                    if (ch === ' ') {
+                        var space = document.createElement('span');
+                        space.className = 'letter-span';
+                        space.innerHTML = '&nbsp;';
+                        title.appendChild(space);
+                    } else {
+                        var span = document.createElement('span');
+                        span.className = 'letter-span';
+                        span.textContent = ch;
+                        title.appendChild(span);
+                    }
+                }
+                var letters = title.querySelectorAll('.letter-span');
+                letters.forEach(function(span, idx) {
+                    setTimeout(function() { span.classList.add('visible'); }, 600 + idx * 40);
+                });
+            }
+        })();
+
+        (function() {
+            function wrapWords(root) {
+                var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                var nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+                nodes.forEach(function(node) {
+                    var text = node.textContent;
+                    var parts = text.split(/(\s+)/);
+                    if (parts.length < 2) return;
+                    var frag = document.createDocumentFragment();
+                    for (var i = 0; i < parts.length; i++) {
+                        if (parts[i].trim() === '') {
+                            frag.appendChild(document.createTextNode(parts[i]));
+                        } else {
+                            var span = document.createElement('span');
+                            span.className = 'hover-word';
+                            span.textContent = parts[i];
+                            frag.appendChild(span);
+                        }
+                    }
+                    node.parentNode.replaceChild(frag, node);
+                });
+            }
+            var targets = document.querySelectorAll('h1, h2, h3, h4, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+            targets.forEach(function(el) {
+                if (!el || el.closest('.hover-word') || el.classList.contains('post-title') || el.querySelector('.hover-word')) return;
+                wrapWords(el);
+            });
+        })();
+
+        (function() {
+            var bar = document.getElementById('scroll-progress');
+            if (!bar) return;
+            function update() {
+                var scrollTop = window.scrollY;
+                var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                bar.style.width = pct + '%';
+            }
+            window.addEventListener('scroll', update);
+            update();
+        })();
+
+        (function() {
+            var el = document.querySelector('.parallax-image');
+            if (!el) return;
+            function update() {
+                var scrollY = window.scrollY;
+                el.style.backgroundPositionY = (50 - scrollY * 0.04) + '%';
+            }
+            window.addEventListener('scroll', update);
+            update();
+        })();
+
+        (function() {
+            var authorIcon = document.querySelector('.icon-author');
+            var dateIcon = document.querySelector('.icon-date');
+            if (authorIcon) {
+                authorIcon.addEventListener('click', function() {
+                    this.classList.remove('icon-bounce-active');
+                    void this.offsetWidth;
+                    this.classList.add('icon-bounce-active');
+                });
+                authorIcon.addEventListener('animationend', function() {
+                    this.classList.remove('icon-bounce-active');
+                });
+            }
+            if (dateIcon) {
+                dateIcon.addEventListener('click', function() {
+                    this.classList.remove('icon-rotate-active');
+                    void this.offsetWidth;
+                    this.classList.add('icon-rotate-active');
+                });
+                dateIcon.addEventListener('animationend', function() {
+                    this.classList.remove('icon-rotate-active');
+                });
+            }
+        })();
+
+        /* ── Views Icon Animation ── */
+        (function() {
+            var viewsEl = document.querySelector('.blog-views-detail');
+            if (!viewsEl) return;
+            var svg = viewsEl.querySelector('svg');
+            var countSpan = viewsEl.querySelector('span');
+            var baseViews = parseInt('@Model.Views', 10) || 0;
+            function pulse() { svg.classList.remove('views-pulse'); void svg.offsetWidth; svg.classList.add('views-pulse'); }
+            svg.addEventListener('mouseenter', function() {
+                svg.classList.add('views-hover');
+                if (svg.classList.contains('views-counted')) return;
+                svg.classList.add('views-counted');
+                var current = baseViews;
+                var target = baseViews + Math.floor(Math.random() * 50) + 10;
+                var step = Math.ceil((target - current) / 20);
+                function tick() {
+                    current += step;
+                    if (current >= target) { current = target; countSpan.textContent = current >= 1000 ? (current / 1000).toFixed(1).replace('.0','') + 'k' : current; return; }
+                    countSpan.textContent = current >= 1000 ? (current / 1000).toFixed(1).replace('.0','') + 'k' : current;
+                    requestAnimationFrame(tick);
+                }
+                tick();
+            });
+            svg.addEventListener('mouseleave', function() {
+                svg.classList.remove('views-hover');
+            });
+            svg.addEventListener('click', function() {
+                svg.classList.remove('views-blink');
+                void svg.offsetWidth;
+                svg.classList.add('views-blink');
+            });
+            svg.addEventListener('animationend', function(e) {
+                if (e.animationName === 'viewsBlink') svg.classList.remove('views-blink');
+                if (e.animationName === 'viewsPulse') svg.classList.remove('views-pulse');
+            });
+            setInterval(pulse, 8000);
+        })();
+
+        (function() {
+            var headings = document.querySelectorAll('.blog-content h2, .blog-content h3');
+            if (!headings.length) return;
+            headings.forEach(function(h) {
+                if (!h.id) h.id = 'toc-heading-' + Math.random().toString(36).slice(2, 8);
+                var wrap = document.createElement('div');
+                wrap.className = 'heading-underline-wrap';
+                h.parentNode.insertBefore(wrap, h);
+                wrap.appendChild(h);
+                var line = document.createElement('div');
+                line.className = 'heading-underline';
+                wrap.appendChild(line);
+                var obs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            line.classList.add('heading-underline-visible');
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                obs.observe(wrap);
+            });
+        })();
+
+        (function() {
+            var blockquotes = document.querySelectorAll('.blog-content blockquote');
+            if (!blockquotes.length) return;
+            blockquotes.forEach(function(bq) {
+                var border = document.createElement('div');
+                border.className = 'bq-border';
+                bq.style.position = 'relative';
+                bq.insertBefore(border, bq.firstChild);
+                var obs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            border.classList.add('bq-border-visible');
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                obs.observe(bq);
+            });
+        })();
+
+        (function() {
+            var backBtn = document.getElementById('back-to-top');
+            if (!backBtn) return;
+            function toggle() {
+                if (window.scrollY > 300) {
+                    backBtn.classList.add('visible');
+                } else {
+                    backBtn.classList.remove('visible');
+                }
+            }
+            window.addEventListener('scroll', toggle);
+            toggle();
+            backBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
+
+        (function() {
+            var marker = document.getElementById('content-end-marker');
+            if (!marker) return;
+            var toast = document.getElementById('reading-toast');
+            if (!toast) return;
+            var obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        toast.classList.add('visible');
+                        setTimeout(function() { toast.classList.remove('visible'); }, 3000);
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            obs.observe(marker);
+        })();
+        (function() {
+            var canvas = document.getElementById('bgCanvas');
+            if (!canvas) return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { canvas.style.display = 'none'; return; }
+            var ctx = canvas.getContext('2d');
+            var w, h, shapes = [];
+            var colors = ['rgba(46, 204, 113,', 'rgba(34, 197, 94,', 'rgba(16, 185, 129,', 'rgba(52, 211, 153,'];
+            var types = ['circle', 'triangle', 'square', 'hexagon', 'diamond', 'plus'];
+            function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+            window.addEventListener('resize', resize);
+            resize();
+            function create() {
+                return {
+                    type: types[Math.floor(Math.random() * types.length)],
+                    x: Math.random() * (w + 200) - 100,
+                    y: Math.random() * (h + 200) - 100,
+                    size: 15 + Math.random() * 40,
+                    rot: Math.random() * Math.PI * 2,
+                    rotSpd: (Math.random() - 0.5) * 0.015,
+                    vx: (Math.random() - 0.5) * 0.25,
+                    vy: (Math.random() - 0.5) * 0.25 - 0.08,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    op: 0, life: 0, maxLife: 800 + Math.random() * 600
+                };
+            }
+            function drawShape(s) {
+                ctx.save();
+                ctx.translate(s.x, s.y);
+                ctx.rotate(s.rot);
+                var a = s.op * 0.07;
+                ctx.strokeStyle = s.color + a + ')';
+                ctx.lineWidth = 1.5;
+                ctx.fillStyle = s.color + (a * 0.4) + ')';
+                ctx.beginPath();
+                switch (s.type) {
+                    case 'circle': ctx.arc(0, 0, s.size, 0, Math.PI * 2); break;
+                    case 'triangle':
+                        for (var i = 0; i < 3; i++) { var ang = (i / 3) * Math.PI * 2 - Math.PI / 2; var px = Math.cos(ang) * s.size, py = Math.sin(ang) * s.size; if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); }
+                        ctx.closePath(); break;
+                    case 'square': ctx.rect(-s.size, -s.size, s.size * 2, s.size * 2); break;
+                    case 'hexagon':
+                        for (var i = 0; i < 6; i++) { var ang = (i / 6) * Math.PI * 2 - Math.PI / 6; var px = Math.cos(ang) * s.size, py = Math.sin(ang) * s.size; if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); }
+                        ctx.closePath(); break;
+                    case 'diamond': ctx.moveTo(0, -s.size); ctx.lineTo(s.size, 0); ctx.lineTo(0, s.size); ctx.lineTo(-s.size, 0); ctx.closePath(); break;
+                    case 'plus':
+                        var t = s.size / 3; ctx.moveTo(-t, -s.size); ctx.lineTo(t, -s.size); ctx.lineTo(t, -t); ctx.lineTo(s.size, -t); ctx.lineTo(s.size, t); ctx.lineTo(t, t); ctx.lineTo(t, s.size); ctx.lineTo(-t, s.size); ctx.lineTo(-t, t); ctx.lineTo(-s.size, t); ctx.lineTo(-s.size, -t); ctx.lineTo(-t, -t);
+                        ctx.closePath(); break;
+                }
+                ctx.fill(); ctx.stroke();
+                ctx.restore();
+            }
+            function update() {
+                for (var i = shapes.length - 1; i >= 0; i--) {
+                    var s = shapes[i];
+                    s.x += s.vx; s.y += s.vy; s.rot += s.rotSpd; s.life++;
+                    if (s.life < 80) s.op = s.life / 80;
+                    else if (s.life > s.maxLife - 80) s.op = (s.maxLife - s.life) / 80;
+                    else s.op = 1;
+                    if (s.life >= s.maxLife || s.x < -200 || s.x > w + 200 || s.y < -200 || s.y > h + 200) { shapes.splice(i, 1); }
+                }
+                if (shapes.length < 8 && Math.random() < 0.04) { shapes.push(create()); }
+                if (shapes.length < 4) { shapes.push(create()); }
+            }
+            function draw() { ctx.clearRect(0, 0, w, h); for (var i = 0; i < shapes.length; i++) drawShape(shapes[i]); }
+            function loop() { update(); draw(); requestAnimationFrame(loop); }
+            loop();
+        })();
+    </script>
+}

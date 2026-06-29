@@ -42,12 +42,326 @@ public class HomeController : Controller
             await _context.SaveChangesAsync();
         }
 
+        // Seed blog posts if empty or fewer than 25
+        if (!await _context.BlogPosts.AnyAsync() || await _context.BlogPosts.CountAsync() < 25)
+        {
+            _context.BlogPosts.RemoveRange(_context.BlogPosts);
+            await _context.SaveChangesAsync();
+            var rng = new Random();
+            var allSeedPosts = new List<BlogPost>
+            {
+                new()
+                {
+                    Title = "UI/UX Design Trends That Will Define 2026",
+                    Slug = "ui-ux-design-trends-2026",
+                    Excerpt = "From AI-powered personalization to hyper-minimalist interfaces, the UX landscape is shifting fast. Discover the design trends that will shape digital experiences this year and how to apply them to your own projects.",
+                    Content = "<h2>The Rise of AI-Driven Interfaces</h2><p>Artificial intelligence is no longer a futuristic concept — it is actively reshaping how users interact with digital products. In 2026, we are seeing AI move beyond chatbots and into adaptive interfaces that learn from user behavior in real time.</p><h3>Personalization at Scale</h3><p>Modern users expect experiences that feel tailor-made. AI allows designers to create interfaces that adjust layout, content, and navigation based on individual preferences without sacrificing aesthetic cohesion.</p><h2>Hyper-Minimalism and Micro-Interactions</h2><p>Less really is more. The trend toward minimal design continues, but with a new emphasis on micro-interactions that delight users at every touchpoint. Subtle hover states, animated transitions, and haptic feedback create a sense of polish.</p><p>Brands that invest in thoughtful micro-interactions see higher engagement and lower bounce rates. The key is restraint — every animation should serve a purpose.</p>",
+                    ImageUrl = "https://picsum.photos/seed/uiux2026/800/450",
+                    Author = "Jane Smith",
+                    PublishedAt = new DateTime(2026, 6, 20),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Best Practices for Building Modern Mobile Apps",
+                    Slug = "modern-mobile-app-development",
+                    Excerpt = "Mobile app development continues to evolve with new tools and frameworks. Learn the essential practices every developer should follow to build fast, reliable, and user-friendly applications.",
+                    Content = "<h2>Choosing the Right Architecture</h2><p>The foundation of any great mobile app is a solid architecture. Whether you choose MVVM, Clean Architecture, or MVI, consistency is key. A well-structured codebase makes feature additions and bug fixes significantly faster.</p><h3>Cross-Platform vs Native</h3><p>The debate between cross-platform frameworks like Flutter and React Native versus native development continues. Each approach has trade-offs in performance, development speed, and access to platform-specific features.</p><h2>Performance Optimization</h2><p>Users expect apps to launch in under two seconds. Strategies like lazy loading, efficient state management, and image caching are critical for delivering a smooth experience on both iOS and Android.</p><p>Regular profiling with tools like Xcode Instruments or Android Studio Profiler helps identify bottlenecks before they affect users.</p>",
+                    ImageUrl = "https://picsum.photos/seed/mobileapp/800/450",
+                    Author = "Alex Rivera",
+                    PublishedAt = new DateTime(2026, 6, 5),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Digital Marketing Strategies That Actually Drive Growth",
+                    Slug = "digital-marketing-strategies-growth",
+                    Excerpt = "Not all marketing strategies deliver results. This post breaks down the data-backed approaches that consistently drive traffic, generate leads, and increase revenue for digital agencies.",
+                    Content = "<h2>Content-Led Growth</h2><p>The most successful marketing campaigns start with great content. Blog posts, videos, and case studies that genuinely help your audience build trust and authority in your niche.</p><h3>SEO and Organic Reach</h3><p>Paid advertising is becoming more expensive, making organic reach more valuable than ever. A strong SEO strategy focused on user intent can deliver sustainable traffic for years.</p><h2>Conversion Rate Optimization</h2><p>Getting traffic is only half the battle. Converting that traffic into leads and customers requires careful A/B testing, clear calls-to-action, and frictionless user journeys. Small improvements in conversion rate can have outsized impacts on revenue.</p><p>Analyze your funnel regularly, identify drop-off points, and iterate relentlessly. The brands that win are the ones that never stop optimizing.</p>",
+                    ImageUrl = "https://picsum.photos/seed/digitalmktg/800/450",
+                    Author = "Sarah Chen",
+                    PublishedAt = new DateTime(2026, 5, 25),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Essential Graphic Design Tips for Non-Designers",
+                    Slug = "graphic-design-tips-non-designers",
+                    Excerpt = "You do not need a design degree to create visually appealing graphics. These practical tips will help anyone improve their layouts, color choices, and typography instantly.",
+                    Content = "<h2>Master the Grid</h2><p>Every great design starts with a grid. Whether you are working on a social media graphic or a full website layout, aligning elements to a consistent grid creates visual harmony and makes your work look professional.</p><h3>Color Theory Made Simple</h3><p>Understanding complementary colors, contrast ratios, and color psychology can transform your designs. Stick to a palette of two to three primary colors and use accent colors sparingly for maximum impact.</p><h2>Typography Hierarchy</h2><p>The fastest way to improve any design is to fix the typography. Use no more than two typefaces, establish a clear hierarchy with size and weight, and pay attention to line height and letter spacing.</p><p>Good typography is invisible — it guides the reader's eye without calling attention to itself. When done right, the message feels effortless to consume.</p>",
+                    ImageUrl = "https://picsum.photos/seed/graphicdesign/800/450",
+                    Author = "John Doe",
+                    PublishedAt = new DateTime(2026, 5, 10),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "The Complete Guide to Web Performance Optimization",
+                    Slug = "web-performance-optimization-guide",
+                    Excerpt = "Slow websites lose users and revenue. This comprehensive guide covers every technique you need to make your sites load faster, from image optimization to JavaScript bundling strategies.",
+                    Content = "<h2>Measuring Performance</h2><p>Before optimizing, you need to measure. Core Web Vitals — LCP, FID, and CLS — are the industry standard metrics. Tools like Lighthouse and PageSpeed Insights provide actionable recommendations.</p><h3>Image Optimization</h3><p>Images account for over half of a typical page's weight. Using modern formats like WebP and AVIF, implementing lazy loading, and serving responsive images can cut load times dramatically.</p><h2>JavaScript and CSS Delivery</h2><p>Render-blocking resources are a major performance killer. Code splitting, tree shaking, and deferring non-critical scripts ensure that users see content as quickly as possible.</p><p>Server-side rendering and static generation can also significantly improve perceived performance for content-heavy sites.</p>",
+                    ImageUrl = "https://picsum.photos/seed/webperf/800/450",
+                    Author = "Priya Patel",
+                    PublishedAt = new DateTime(2026, 4, 22),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "SEO for Agencies: How to Rank Your Clients Higher",
+                    Slug = "seo-agencies-rank-higher",
+                    Excerpt = "Ranking your clients in competitive markets requires a strategic approach. Learn the SEO tactics that agencies use to deliver measurable results across multiple industries.",
+                    Content = "<h2>Technical SEO Foundations</h2><p>Before any content strategy can work, the technical foundation must be solid. Crawlability, indexation, site speed, and mobile responsiveness are non-negotiable for ranking success.</p><h3>Keyword Strategy at Scale</h3><p>Agencies managing multiple clients need efficient keyword research processes. Focus on topic clusters rather than individual keywords, and prioritize terms with clear commercial intent.</p><h2>Content and Link Building</h2><p>High-quality content and authoritative backlinks remain the strongest ranking signals. Develop content hubs around core topics and pursue guest posting, digital PR, and resource link building.</p><p>Consistency matters more than volume. Publishing one excellent article per week outperforms five mediocre ones.</p>",
+                    ImageUrl = "https://picsum.photos/seed/seoagency/800/450",
+                    Author = "John Doe",
+                    PublishedAt = new DateTime(2026, 4, 8),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Content Writing for Brands: Finding Your Unique Voice",
+                    Slug = "content-writing-brands-voice",
+                    Excerpt = "In a crowded digital landscape, brand voice is your differentiator. Learn how to develop a distinctive writing style that resonates with your audience and builds lasting loyalty.",
+                    Content = "<h2>Why Voice Matters</h2><p>Brands that sound like everyone else get ignored. A distinctive voice cuts through the noise and makes your audience feel like they are talking to a person, not a corporation. Consistency across every touchpoint builds recognition and trust.</p><h3>Defining Your Tone Spectrum</h3><p>Your tone should flex depending on context while staying true to your core voice. A tweet can be playful, a white paper authoritative, and a support email empathetic — all from the same brand.</p><h2>Storytelling Frameworks</h2><p>The most memorable brand content follows a narrative arc. Problem-agitation-solution, hero's journey, and before-after-bridge are proven frameworks that keep readers engaged from first sentence to call to action.</p><p>Great brand writing feels personal. Use \"you\" more than \"we\", share real stories, and don't be afraid to show vulnerability.</p>",
+                    ImageUrl = "https://picsum.photos/seed/brandwriting/800/450",
+                    Author = "Sarah Chen",
+                    PublishedAt = new DateTime(2026, 3, 25),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Social Media Strategy: Building Engagement That Lasts",
+                    Slug = "social-media-strategy-engagement",
+                    Excerpt = "Chasing likes and followers is a losing game. This post explains how to build a social media strategy focused on meaningful engagement, community growth, and measurable business outcomes.",
+                    Content = "<h2>Platform Strategy</h2><p>Not every platform is right for every brand. Choose where your audience spends time and go deep rather than trying to be everywhere at once. A strong presence on two platforms beats a weak presence on six.</p><h3>Content Pillars</h3><p>Organize your social content around three to four core pillars — education, entertainment, inspiration, and promotion. This framework ensures variety while maintaining strategic focus.</p><h2>Community Management</h2><p>Engagement is a two-way street. Respond to comments, ask questions, and feature user-generated content. Brands that treat social media as a conversation rather than a broadcast channel see significantly higher loyalty.</p><p>Consistency in posting, authentic interactions, and data-driven content adjustments are the keys to sustained social media success.</p>",
+                    ImageUrl = "https://picsum.photos/seed/socialstrat/800/450",
+                    Author = "Jane Smith",
+                    PublishedAt = new DateTime(2026, 3, 10),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Client Communication Tips Every Agency Should Know",
+                    Slug = "client-communication-tips-agency",
+                    Excerpt = "Strong client relationships are built on clear communication. Discover the frameworks and habits that top agencies use to keep clients informed, aligned, and delighted throughout every project.",
+                    Content = "<h2>Setting Expectations Early</h2><p>Misalignment is the number one cause of client dissatisfaction. A well-written scope of work, clear milestones, and honest timelines prevent misunderstandings before they happen. Over-communicate early and often.</p><h3>The Weekly Check-In</h3><p>A brief weekly email or standup meeting keeps everyone aligned. Share what was accomplished, what is coming next, and any blockers. This simple habit builds trust and reduces surprise requests.</p><h2>Handling Feedback Gracefully</h2><p>Not all feedback is easy to hear. The best agencies listen without being defensive, ask clarifying questions, and present alternative solutions when client requests conflict with project goals.</p><p>Document every decision in writing. A shared decision log prevents \"we never agreed to that\" disputes and provides a valuable reference throughout the project.</p>",
+                    ImageUrl = "https://picsum.photos/seed/clientcomm/800/450",
+                    Author = "Alex Rivera",
+                    PublishedAt = new DateTime(2026, 2, 20),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Remote Work Best Practices for Creative Teams",
+                    Slug = "remote-work-creative-teams",
+                    Excerpt = "Creative collaboration is harder when the team is distributed. Learn the tools, rituals, and management practices that keep remote creative teams productive, connected, and inspired.",
+                    Content = "<h2>Asynchronous Communication</h2><p>Not everything needs a meeting. Written updates, recorded walkthroughs, and shared documents let team members contribute on their own schedules. This is especially important for creative work that requires deep focus.</p><h3>Virtual Collaboration Tools</h3><p>Figma, Miro, and Notion have become essential for remote creative teams. The key is tool discipline — define clear conventions for file organization, commenting, and version control to avoid chaos.</p><h2>Maintaining Team Culture</h2><p>Culture doesn't happen by accident in a remote environment. Regular virtual social events, peer recognition programs, and annual in-person meetups help maintain the human connections that drive great creative work.</p><p>The best remote teams invest intentionally in both synchronous connection time and asynchronous deep work periods.</p>",
+                    ImageUrl = "https://picsum.photos/seed/remotework/800/450",
+                    Author = "Priya Patel",
+                    PublishedAt = new DateTime(2026, 2, 5),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "AI Tools for Designers: A Practical Guide",
+                    Slug = "ai-tools-designers-guide",
+                    Excerpt = "AI is transforming the design industry. From generative fill to automated wireframing, explore the tools that are changing how designers work and how to integrate them into your workflow.",
+                    Content = "<h2>Generative Design Tools</h2><p>Tools like Midjourney, DALL-E, and Adobe Firefly have democratized visual creation. Designers can now generate mood boards, concept art, and even production assets in minutes rather than days.</p><h3>AI-Assisted Wireframing</h3><p>New tools can turn text prompts into functional wireframes and prototypes. While these outputs still need human refinement, they accelerate the early stages of the design process significantly.</p><h2>Ethical Considerations</h2><p>Using AI in design raises important questions about originality, copyright, and job displacement. The most successful designers treat AI as a collaborator, not a replacement — using it to handle repetitive tasks while focusing their energy on strategy and creativity.</p><p>The designers who thrive will be those who learn to prompt effectively, critique AI outputs critically, and bring uniquely human perspectives to their work.</p>",
+                    ImageUrl = "https://picsum.photos/seed/aitools/800/450",
+                    Author = "Jane Smith",
+                    PublishedAt = new DateTime(2026, 1, 20),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Building a Strong Brand Identity from Scratch",
+                    Slug = "building-strong-brand-identity",
+                    Excerpt = "A great brand is more than a logo. This guide walks through the complete process of building a brand identity that communicates your values, differentiates you from competitors, and connects with your audience.",
+                    Content = "<h2>Defining Your Brand Strategy</h2><p>Brand identity starts with strategy, not design. Define your mission, vision, values, target audience, and competitive positioning before creating any visual elements. These foundational decisions guide every design choice that follows.</p><h3>Visual Identity Systems</h3><p>A cohesive visual system includes logo variations, color palette, typography, iconography, and imagery guidelines. Each element should work independently and together to communicate your brand's personality consistently.</p><h2>Brand Guidelines and Consistency</h2><p>Document everything in a comprehensive brand guide. This ensures that anyone creating content for your brand — from designers to social media managers — maintains consistency across every touchpoint.</p><p>The strongest brands are those that apply their identity consistently across every channel while remaining flexible enough to evolve with their audience over time.</p>",
+                    ImageUrl = "https://picsum.photos/seed/brandidentity/800/450",
+                    Author = "John Doe",
+                    PublishedAt = new DateTime(2026, 1, 5),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Mobile-First Design Principles Every Developer Should Know",
+                    Slug = "mobile-first-design-principles",
+                    Excerpt = "Mobile traffic now accounts for over 60% of all web traffic. Learn the core principles of mobile-first design and how to apply them to create experiences that work flawlessly on every screen size.",
+                    Content = "<h2>Start with the Smallest Screen</h2><p>Mobile-first design means designing for the smallest screen first, then progressively enhancing for larger screens. This approach forces prioritization — you can only include what truly matters when space is limited.</p><h3>Touch Targets and Spacing</h3><p>Fingers are less precise than a mouse cursor. Buttons and interactive elements should be at least 48x48 pixels with adequate spacing to prevent accidental taps. This seemingly simple rule dramatically improves mobile usability.</p><h2>Performance Constraints</h2><p>Mobile devices often have slower network connections and less processing power. Optimizing images, minimizing JavaScript, and leveraging browser caching are essential practices that benefit all users regardless of device.</p><p>The best mobile experiences feel native — fast, responsive, and intuitive. Test on real devices, not just browser dev tools, to catch issues before they reach users.</p>",
+                    ImageUrl = "https://picsum.photos/seed/mobilefirst/800/450",
+                    Author = "Alex Rivera",
+                    PublishedAt = new DateTime(2025, 12, 20),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Typography in Modern Web Design: A Complete Guide",
+                    Slug = "typography-modern-web-design",
+                    Excerpt = "Typography is the backbone of great web design. This guide covers everything from typeface selection to responsive type scales, helping you make informed typography decisions that elevate your projects.",
+                    Content = "<h2>Choosing the Right Typeface</h2><p>Selecting a typeface is one of the most important design decisions you will make. Consider readability across devices, brand personality, and loading performance. Stick to two families maximum — one for headings and one for body text.</p><h3>Establishing a Type Scale</h3><p>A modular type scale creates visual harmony. Start with your body text size and use consistent ratios — typically 1.25 or 1.333 — to generate heading sizes. This mathematical approach ensures proportionality across all text elements.</p><h2>Responsive Typography</h2><p>Text that looks perfect on desktop may be illegible on mobile. Use fluid typography with clamp() in CSS to scale text smoothly between viewport sizes. Line length should stay between 50 and 75 characters for optimal readability.</p><p>Good typography is design that communicates. When readers never notice the type itself, you have done your job well.</p>",
+                    ImageUrl = "https://picsum.photos/seed/typography/800/450",
+                    Author = "John Doe",
+                    PublishedAt = new DateTime(2025, 12, 5),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Color Psychology in Branding: How to Choose the Right Palette",
+                    Slug = "color-psychology-branding-palette",
+                    Excerpt = "Colors evoke emotions and influence decisions. Understand the psychology behind color choices and learn how to select a brand palette that communicates your values and resonates with your target audience.",
+                    Content = "<h2>The Science of Color Perception</h2><p>Color is processed before words in the human brain. Studies show that people make subconscious judgments about a product within 90 seconds, and up to 90 percent of that assessment is based on color alone. Getting your palette right is critical.</p><h3>Color Meanings by Industry</h3><p>Blue conveys trust and is favored by financial institutions. Green represents growth and sustainability. Red creates urgency and is common in food and retail. Consider industry norms but do not be afraid to differentiate strategically.</p><h2>Building a Cohesive Palette</h2><p>A strong brand palette includes a primary color, secondary colors, and neutral tones. Follow the 60-30-10 rule — 60 percent dominant, 30 percent secondary, 10 percent accent — for balanced application across touchpoints.</p><p>Test your palette for accessibility. Ensure sufficient contrast ratios and consider how colors appear to users with color vision deficiencies.</p>",
+                    ImageUrl = "https://picsum.photos/seed/colorpsych/800/450",
+                    Author = "Sarah Chen",
+                    PublishedAt = new DateTime(2025, 11, 25),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "E-Commerce UX Best Practices That Boost Conversion Rates",
+                    Slug = "ecommerce-ux-boost-conversions",
+                    Excerpt = "A seamless shopping experience is the difference between a sale and an abandoned cart. Discover the UX patterns and design strategies that top e-commerce brands use to maximize conversions.",
+                    Content = "<h2>Streamlined Checkout Flow</h2><p>Every extra field in your checkout form costs you customers. Implement guest checkout, auto-detect addresses, and offer multiple payment options. The fewer clicks to purchase, the higher your conversion rate.</p><h3>Product Page Optimization</h3><p>High-quality images from multiple angles, clear pricing, and social proof elements like reviews and ratings are essential. Include zoom functionality and size guides to reduce purchase hesitation and returns.</p><h2>Search and Navigation</h2><p>A robust search with autocomplete, filters, and faceted navigation helps users find products quickly. Categories should be intuitive and avoid jargon. Every second spent searching is an opportunity for the user to leave.</p><p>Personalized recommendations based on browsing history and purchase patterns can increase average order value by 10 to 30 percent when implemented thoughtfully.</p>",
+                    ImageUrl = "https://picsum.photos/seed/ecommerceux/800/450",
+                    Author = "Priya Patel",
+                    PublishedAt = new DateTime(2025, 11, 10),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Video Marketing Strategies for Digital Agencies",
+                    Slug = "video-marketing-digital-agencies",
+                    Excerpt = "Video is the most engaging content format online. Learn how digital agencies can leverage video marketing across the customer journey — from awareness campaigns to testimonial content that closes deals.",
+                    Content = "<h2>Types of Video Content</h2><p>Different stages of the funnel require different video formats. Short-form content works best for awareness on social platforms, while longer tutorials and case studies nurture leads. Live video builds authenticity and real-time connection.</p><h3>Production Without a Budget</h3><p>You do not need a professional studio to create effective video. Modern smartphones, good lighting, and quality audio equipment are sufficient for most content. Focus on clear messaging and genuine delivery over production polish.</p><h2>Distribution and Analytics</h2><p>Publish natively on each platform rather than sharing links. YouTube SEO, Instagram Reels algorithms, and LinkedIn video preferences all differ. Track completion rates and engagement metrics to refine your approach continuously.</p><p>Video content generates 1200 percent more shares than text and images combined. Agencies that make video a core part of their marketing strategy see significant competitive advantage.</p>",
+                    ImageUrl = "https://picsum.photos/seed/videomktg/800/450",
+                    Author = "Jane Smith",
+                    PublishedAt = new DateTime(2025, 10, 25),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Accessibility in Web Development: Building for Everyone",
+                    Slug = "accessibility-web-development-everyone",
+                    Excerpt = "Web accessibility is not optional — it is a fundamental right. Learn how to build websites that work for people of all abilities using semantic HTML, ARIA, and inclusive design practices.",
+                    Content = "<h2>Semantic HTML as the Foundation</h2><p>Using proper HTML elements — nav, main, article, aside, button — provides built-in accessibility. Screen readers and other assistive technologies rely on correct document structure to navigate content meaningfully.</p><h3>ARIA and When to Use It</h3><p>ARIA attributes supplement HTML semantics but should not replace them. Use ARIA roles, states, and properties only when native HTML semantics are insufficient. Overusing ARIA can actually harm accessibility.</p><h2>Keyboard Navigation and Focus Management</h2><p>All interactive elements must be reachable and operable via keyboard. Visible focus indicators are essential. Custom components like modals and dropdowns require careful focus trapping and management to prevent users from getting stuck.</p><p>Accessibility benefits everyone — not just users with disabilities. Captions help people in noisy environments, high contrast helps in bright sunlight, and keyboard navigation helps power users move faster.</p>",
+                    ImageUrl = "https://picsum.photos/seed/a11ydev/800/450",
+                    Author = "David Kim",
+                    PublishedAt = new DateTime(2025, 10, 10),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Microinteractions: Small Details That Make a Big Impact",
+                    Slug = "microinteractions-big-impact",
+                    Excerpt = "The difference between a good product and a great one often comes down to the details. Explore how microinteractions — subtle animations, haptic feedback, and responsive states — create delightful user experiences.",
+                    Content = "<h2>What Makes a Microinteraction</h2><p>A microinteraction has four parts: trigger, rules, feedback, and loops and modes. The trigger initiates the interaction, the rules define what happens, the feedback communicates the result, and loops determine repetition.</p><h3>Examples That Delight</h3><p>The like animation on Twitter, the pull-to-refresh on iOS, and the subtle bounce when switching between apps — these small moments create emotional connections. Users may not notice them consciously, but they feel their absence.</p><h2>Implementation Best Practices</h2><p>Microinteractions should be fast — under 300 milliseconds — and serve a clear purpose. Avoid animation for its own sake. Each microinteraction should communicate status, provide visual feedback, or prevent errors.</p><p>Products with thoughtful microinteractions see higher engagement and lower error rates. The investment in these small details pays dividends in user satisfaction and retention.</p>",
+                    ImageUrl = "https://picsum.photos/seed/microinteract/800/450",
+                    Author = "Maya Torres",
+                    PublishedAt = new DateTime(2025, 9, 25),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "API Integration Best Practices for Modern Web Applications",
+                    Slug = "api-integration-web-apps",
+                    Excerpt = "APIs are the glue that connects modern software. This guide covers best practices for integrating third-party APIs — from authentication and error handling to rate limiting and caching strategies.",
+                    Content = "<h2>Authentication and Security</h2><p>Never expose API keys on the client side. Use environment variables for server-side keys and implement token-based authentication like OAuth 2.0 for user-facing integrations. Rotate keys regularly and audit access logs.</p><h3>Error Handling and Resilience</h3><p>APIs fail — networks timeout, services go down, rate limits are exceeded. Implement exponential backoff retry logic, graceful degradation, and meaningful error messages. Circuit breakers prevent cascading failures across your system.</p><h2>Performance Optimization</h2><p>Cache API responses aggressively using ETags, conditional requests, and in-memory caches. Batch requests when possible and consider GraphQL for complex data requirements. Monitor response times and set up alerts for degradation.</p><p>Well-designed API integrations feel seamless to users. The complexity of the underlying communication should be invisible — fast, reliable, and secure by default.</p>",
+                    ImageUrl = "https://picsum.photos/seed/apiintegration/800/450",
+                    Author = "Alex Rivera",
+                    PublishedAt = new DateTime(2025, 9, 10),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Building Design Systems and Component Libraries That Scale",
+                    Slug = "design-systems-component-libraries",
+                    Excerpt = "Design systems are the foundation of consistent, scalable product development. Learn how to build and maintain a design system that empowers your team to ship faster with fewer inconsistencies.",
+                    Content = "<h2>Tokens and Foundations</h2><p>Design tokens are the atomic building blocks of a design system — colors, typography, spacing, and shadows stored as named values. Tokens ensure consistency across platforms and make global updates possible with a single change.</p><h3>Component Architecture</h3><p>Build components following a single responsibility principle. Each component should do one thing well, accept props for customization, and be thoroughly documented with usage examples, variants, and states.</p><h2>Governance and Adoption</h2><p>A design system is only valuable if teams actually use it. Establish clear contribution guidelines, version components semantically, and provide tooling that makes integration frictionless. Regular office hours and demos encourage adoption.</p><p>The best design systems evolve with the products they serve. They are living documents that balance consistency with flexibility, enabling teams to move fast without breaking the visual experience.</p>",
+                    ImageUrl = "https://picsum.photos/seed/designsystems/800/450",
+                    Author = "Jane Smith",
+                    PublishedAt = new DateTime(2025, 8, 25),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Freelancing vs Agency Life: Which Is Right for You?",
+                    Slug = "freelancing-vs-agency-life",
+                    Excerpt = "Choosing between freelancing and working at an agency is one of the biggest career decisions for creative professionals. Compare the pros and cons of each path to find the right fit for your goals and lifestyle.",
+                    Content = "<h2>The Freelancer Advantage</h2><p>Freelancing offers unparalleled freedom — choose your clients, set your schedule, and keep a larger share of your earnings. The trade-off is inconsistent income, the burden of administration, and the isolation of working alone.</p><h3>Agency Structure and Growth</h3><p>Agencies provide stable income, structured career progression, and opportunities to work on larger, more complex projects. You gain exposure to diverse industries and benefit from team collaboration and mentorship.</p><h2>Financial Considerations</h2><p>Freelancers must handle their own taxes, insurance, and retirement planning. Agency employees enjoy benefits and predictable paychecks but typically earn less per hour than successful freelancers charging premium rates.</p><p>Many creative professionals find success in a hybrid model — freelancing for flexibility while maintaining retainer relationships with agencies for stability. The key is knowing yourself and what environment brings out your best work.</p>",
+                    ImageUrl = "https://picsum.photos/seed/freelanceagency/800/450",
+                    Author = "Maya Torres",
+                    PublishedAt = new DateTime(2025, 8, 10),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "How to Write a Creative Brief That Gets Results",
+                    Slug = "write-creative-brief-results",
+                    Excerpt = "A great creative brief is the blueprint for outstanding work. Learn how to write briefs that inspire creativity, align stakeholders, and provide clear direction without stifling the creative process.",
+                    Content = "<h2>The Anatomy of a Brief</h2><p>Every creative brief should include the project background, target audience, key message, deliverables, timeline, and budget. The best briefs are concise — one page is ideal — and focused on outcomes rather than execution details.</p><h3>Writing for Inspiration</h3><p>Briefs should motivate, not dictate. Use evocative language that paints a picture of the desired outcome. Include reference points, mood boards, or competitor examples to convey direction without prescribing solutions.</p><h2>Avoiding Common Pitfalls</h2><p>The most common brief mistakes are being too vague, too prescriptive, or cramming too many objectives into a single project. A clear hierarchy of goals helps the creative team prioritize what truly matters.</p><p>A well-written brief saves time and money by reducing revision cycles. The hour spent writing a thorough brief often saves days of back-and-forth during the creative development phase.</p>",
+                    ImageUrl = "https://picsum.photos/seed/creativebrief/800/450",
+                    Author = "David Kim",
+                    PublishedAt = new DateTime(2025, 7, 25),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "Landing Page Conversion Tips That Double Your Leads",
+                    Slug = "landing-page-conversion-double-leads",
+                    Excerpt = "Your landing page is often the first impression potential customers have of your business. Apply these proven conversion optimization techniques to turn more visitors into qualified leads.",
+                    Content = "<h2>Above the Fold Clarity</h2><p>Visitors decide whether to stay or leave within seconds. Your headline must clearly communicate the unique value proposition, and your primary call to action should be visible without scrolling. Remove navigation links that distract from the conversion goal.</p><h3>Social Proof and Urgency</h3><p>Testimonials, case study logos, and trust badges reduce anxiety and build credibility. Limited-time offers and countdown timers create urgency, but use them honestly — false urgency erodes trust over time.</p><h2>Form Optimization</h2><p>Every field you add reduces conversion rate. Ask only for essential information and consider multi-step forms for longer conversions. Inline validation, clear error messages, and privacy reassurances reduce form abandonment.</p><p>Continuous A/B testing is the secret to sustained improvement. Test headlines, button colors, images, and form lengths systematically. Small changes can produce outsized results when driven by data.</p>",
+                    ImageUrl = "https://picsum.photos/seed/landingpage/800/450",
+                    Author = "John Doe",
+                    PublishedAt = new DateTime(2025, 7, 10),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                },
+                new()
+                {
+                    Title = "The Future of AI in Creative Work: Opportunities and Challenges",
+                    Slug = "future-ai-creative-work",
+                    Excerpt = "AI is reshaping creative industries at an unprecedented pace. Explore the opportunities AI presents for creative professionals and the challenges that need to be addressed as the technology evolves.",
+                    Content = "<h2>Augmenting Human Creativity</h2><p>AI excels at pattern recognition, data processing, and generating variations — tasks that are time-consuming for humans. By handling these repetitive aspects, AI frees creative professionals to focus on strategy, concept development, and emotional storytelling.</p><h3>New Creative Roles</h3><p>Prompt engineering, AI art direction, and ethical AI consulting are emerging as distinct roles. Creative professionals who develop skills in directing and curating AI outputs will be in high demand as the technology matures.</p><h2>Ethical and Legal Challenges</h2><p>Copyright, attribution, and bias remain unresolved issues in AI-generated content. Clear regulations are needed to protect original creators while enabling innovation. Agencies must develop ethical frameworks for AI use that prioritize transparency.</p><p>The future belongs to those who embrace AI as a collaborator rather than fear it as a competitor. Human creativity amplified by artificial intelligence will produce work that neither could achieve alone.</p>",
+                    ImageUrl = "https://picsum.photos/seed/aifuture/800/450",
+                    Author = "Sarah Chen",
+                    PublishedAt = new DateTime(2025, 6, 25),
+                    IsPublished = true,
+                    Views = rng.Next(120, 4500)
+                }
+            };
+            _context.BlogPosts.AddRange(allSeedPosts);
+            await _context.SaveChangesAsync();
+        }
+
         var vm = new HomeViewModel
         {
             Services = await _context.Services.ToListAsync(),
             Projects = await _context.Projects.ToListAsync(),
             Testimonials = await _context.Testimonials.ToListAsync(),
-            Faqs = await _context.FaqItems.Where(f => f.IsActive).OrderBy(f => f.Order).ToListAsync()
+            Faqs = await _context.FaqItems.Where(f => f.IsActive).OrderBy(f => f.Order).ToListAsync(),
+            BlogPosts = (await _context.BlogPosts.Where(p => p.IsPublished).ToListAsync()).OrderBy(_ => Random.Shared.Next()).Take(3).ToList()
         };
 
         return View(vm);
