@@ -15,3 +15,7 @@ obj/
 # OS
 [Dd]esktop.ini
 Thumbs.db
+
+# Firebase
+firebase-config.json
+Holix/firebase-config.json

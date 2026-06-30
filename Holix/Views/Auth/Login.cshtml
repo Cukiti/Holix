@@ -1,0 +1,114 @@
+@{
+    ViewData["Title"] = "Login";
+}
+
+<section class="d-flex align-items-center" style="min-height: 100vh; padding-top: 100px; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <h2 class="fw-bold text-dark">Bienvenido a Holix</h2>
+                            <p class="text-secondary small">Inicia sesión para continuar</p>
+                        </div>
+
+                        <div id="loginError" class="alert alert-danger d-none" role="alert"></div>
+
+                        <form id="firebaseLoginForm" onsubmit="return false;">
+                            <div class="mb-3">
+                                <label for="email" class="form-label text-secondary fw-bold">Correo Electrónico</label>
+                                <input type="email" class="form-control form-control-lg" id="email" required placeholder="correo@ejemplo.com" style="border-radius: 8px;">
+                            </div>
+                            <div class="mb-4">
+                                <label for="password" class="form-label text-secondary fw-bold">Contraseña</label>
+                                <input type="password" class="form-control form-control-lg" id="password" required placeholder="********" style="border-radius: 8px;">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-3" id="loginBtn" style="border-radius: 8px;">
+                                <span id="loginBtnText">Iniciar Sesión</span>
+                                <span id="loginBtnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <p class="text-secondary small">
+                                ¿No tienes una cuenta? <a asp-controller="Auth" asp-action="Register" class="text-primary fw-bold text-decoration-none">Regístrate aquí</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5UBEDIKe6fzFGJbgBftfnxC1LGae6s4A",
+            authDomain: "holix-d3ad1.firebaseapp.com",
+            projectId: "holix-d3ad1",
+            storageBucket: "holix-d3ad1.firebasestorage.app",
+            messagingSenderId: "1069250068098",
+            appId: "1:1069250068098:web:a326ae63eaf05b956fbe9b",
+            measurementId: "G-Y20S76X4FL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById('firebaseLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loginBtnSpinner = document.getElementById('loginBtnSpinner');
+
+            errorDiv.classList.add('d-none');
+            loginBtn.disabled = true;
+            loginBtnText.classList.add('d-none');
+            loginBtnSpinner.classList.remove('d-none');
+
+            try {
+                // 1. Authenticate with Firebase
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // 2. Get ID Token
+                const idToken = await user.getIdToken();
+
+                // 3. Send token to ASP.NET Core backend
+                const response = await fetch('/Auth/VerifyToken', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ idToken: idToken })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Redirect on success
+                    window.location.href = data.redirectUrl;
+                } else {
+                    throw new Error(data.error || 'Error al verificar sesión en el servidor');
+                }
+            } catch (error) {
+                console.error(error);
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('d-none');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtnText.classList.remove('d-none');
+                loginBtnSpinner.classList.add('d-none');
+            }
+        });
+    </script>
+}

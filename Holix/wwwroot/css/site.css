@@ -116,7 +116,7 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 500px;
   aspect-ratio: 1;
   border-radius: 50%;
-  background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+  background-image: url('/image2.png');
   background-size: cover;
   background-position: center;
   border: 15px solid #f0fdf4;
@@ -187,6 +187,17 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.reason-card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 25px -5px rgba(0,0,0,0.1);
+  border-color: var(--primary-color);
+}
+.reason-card:hover .reason-number {
+  background-color: var(--primary-color);
+  color: white;
 }
 .reason-number {
   background-color: #f1f5f9;
@@ -196,6 +207,22 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 8px;
   display: inline-block;
   margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+/* Testimonial Cards */
+.testimonial-card {
+  background-color: #ffffff;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 25px -5px rgba(0,0,0,0.1);
+  border-color: var(--primary-color);
 }
 
 /* FAQ Section */
@@ -243,16 +270,35 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   border: 1px solid #374151;
-  color: white;
-  margin-right: 0.5rem;
+  color: #0ea5e9;
+  margin-right: 0.75rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
 }
 .social-links a:hover {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+  background-color: transparent;
+  border-color: #0ea5e9;
+  color: #0ea5e9;
+}
+
+.footer-link {
+  color: #0ea5e9 !important;
+  font-size: 1.05rem;
+}
+.footer-link:hover {
+  color: #38bdf8 !important;
+}
+.footer-icon {
+  color: #0ea5e9;
+  font-size: 1.2rem;
+}
+.footer-text {
+  color: #9ca3af;
+  font-size: 1rem;
 }
 .newsletter-form input {
   background-color: transparent;

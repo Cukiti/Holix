@@ -1,0 +1,134 @@
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<section class="d-flex align-items-center" style="min-height: 100vh; padding-top: 100px; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <h2 class="fw-bold text-dark">Únete a Holix</h2>
+                            <p class="text-secondary small">Crea tu cuenta de forma rápida y sencilla</p>
+                        </div>
+
+                        <div id="registerError" class="alert alert-danger d-none" role="alert"></div>
+
+                        <form id="firebaseRegisterForm" onsubmit="return false;">
+                            <div class="mb-3">
+                                <label for="name" class="form-label text-secondary fw-bold">Nombre Completo</label>
+                                <input type="text" class="form-control form-control-lg" id="name" required placeholder="Juan Pérez" style="border-radius: 8px;">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label text-secondary fw-bold">Correo Electrónico</label>
+                                <input type="email" class="form-control form-control-lg" id="email" required placeholder="correo@ejemplo.com" style="border-radius: 8px;">
+                            </div>
+                            <div class="mb-4">
+                                <label for="password" class="form-label text-secondary fw-bold">Contraseña</label>
+                                <input type="password" class="form-control form-control-lg" id="password" required placeholder="********" style="border-radius: 8px;" minlength="6">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-3" id="registerBtn" style="border-radius: 8px;">
+                                <span id="registerBtnText">Crear Cuenta</span>
+                                <span id="registerBtnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <p class="text-secondary small">
+                                ¿Ya tienes una cuenta? <a asp-controller="Auth" asp-action="Login" class="text-primary fw-bold text-decoration-none">Inicia sesión aquí</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5UBEDIKe6fzFGJbgBftfnxC1LGae6s4A",
+            authDomain: "holix-d3ad1.firebaseapp.com",
+            projectId: "holix-d3ad1",
+            storageBucket: "holix-d3ad1.firebasestorage.app",
+            messagingSenderId: "1069250068098",
+            appId: "1:1069250068098:web:a326ae63eaf05b956fbe9b",
+            measurementId: "G-Y20S76X4FL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById('firebaseRegisterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('registerError');
+            const registerBtn = document.getElementById('registerBtn');
+            const registerBtnText = document.getElementById('registerBtnText');
+            const registerBtnSpinner = document.getElementById('registerBtnSpinner');
+
+            errorDiv.classList.add('d-none');
+            registerBtn.disabled = true;
+            registerBtnText.classList.add('d-none');
+            registerBtnSpinner.classList.remove('d-none');
+
+            try {
+                // 1. Create User in Firebase
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // 2. Set the User's Display Name
+                await updateProfile(user, {
+                    displayName: name
+                });
+                
+                // 3. Get ID Token
+                const idToken = await user.getIdToken(true); // force refresh to include displayName if possible
+
+                // 4. Send token to ASP.NET Core backend to create local cookie session
+                const response = await fetch('/Auth/VerifyToken', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ idToken: idToken })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Redirect on success
+                    window.location.href = data.redirectUrl;
+                } else {
+                    throw new Error(data.error || 'Error al iniciar sesión automáticamente en el servidor');
+                }
+            } catch (error) {
+                console.error(error);
+                let errorMessage = error.message;
+                
+                // Friendly error messages for Firebase
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = 'El correo electrónico ya está registrado. Por favor, inicia sesión.';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+                }
+                
+                errorDiv.textContent = errorMessage;
+                errorDiv.classList.remove('d-none');
+            } finally {
+                registerBtn.disabled = false;
+                registerBtnText.classList.remove('d-none');
+                registerBtnSpinner.classList.add('d-none');
+            }
+        });
+    </script>
+}

@@ -12,7 +12,7 @@
                 <span class="text-primary fw-bold mb-3 d-block"><i class="fa-solid fa-minus me-2"></i>Welcome to Our Agency</span>
                 <h1 class="hero-heading mb-4">Smart Ideas for your<br>Brand are Here</h1>
                 <p class="lead text-secondary mb-5 pe-lg-5">
-                    Donec tincidunt lacinia diam, eu volutpat est sollicitudin at. Vestibulum ut mi tristi que, vulputate ante quis, tempus enim. Proin quis euismod purus. Suspendisse efficitur aliquam enim sed consequat vulputate ante quis.
+                    Transformamos tu visión en experiencias digitales excepcionales. En Holix, combinamos diseño UX/UI de vanguardia, desarrollo robusto y marketing estratégico para impulsar el éxito de tu negocio en el mundo digital.
                 </p>
                 <div class="d-flex align-items-center flex-wrap">
                     <a href="#services" class="btn btn-primary me-4 mb-2">DISCOVER MORE</a>
@@ -48,22 +48,22 @@
                 </div>
             </div>
             <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
-                <h2 class="fw-bold fs-1 mb-4 about-title">We create some things, Design for your success future.</h2>
+                <h2 class="fw-bold fs-1 mb-4 about-title">Creamos soluciones digitales diseñadas para tu éxito.</h2>
                 <p class="text-secondary mb-4">
-                    Lorem Ipsum is simply dummy text of free available in market the way printing and typesetting industry has been the industry's standard dummy text ever.
+                    Nos apasiona la innovación y la excelencia. Nuestro equipo multidisciplinario trabaja mano a mano contigo para construir productos digitales que no solo lucen increíbles, sino que ofrecen resultados medibles y un alto retorno de inversión.
                 </p>
                 <ul class="list-unstyled mb-5">
                     <li class="mb-3 d-flex align-items-center" data-aos="fade-up" data-aos-delay="0">
-                        <i class="fa-solid fa-circle text-primary me-3 fs-6" style="font-size: 0.6rem !important;"></i>
-                        <span class="text-secondary fw-medium">Price of additional materials or parts (if needed)</span>
+                        <i class="fa-solid fa-check text-primary me-3 fs-6"></i>
+                        <span class="text-secondary fw-medium">Estrategias personalizadas para tu marca</span>
                     </li>
                     <li class="mb-3 d-flex align-items-center" data-aos="fade-up" data-aos-delay="100">
-                        <i class="fa-solid fa-circle text-primary me-3 fs-6" style="font-size: 0.6rem !important;"></i>
-                        <span class="text-secondary fw-medium">Transportation cost for carrying new materials/parts</span>
+                        <i class="fa-solid fa-check text-primary me-3 fs-6"></i>
+                        <span class="text-secondary fw-medium">Soporte técnico y mantenimiento continuo</span>
                     </li>
                     <li class="mb-3 d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
-                        <i class="fa-solid fa-circle text-primary me-3 fs-6" style="font-size: 0.6rem !important;"></i>
-                        <span class="text-secondary fw-medium">You will get 100% money back offer.</span>
+                        <i class="fa-solid fa-check text-primary me-3 fs-6"></i>
+                        <span class="text-secondary fw-medium">Enfoque centrado en la conversión y el ROI</span>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center flex-wrap">
@@ -167,12 +167,12 @@
         <div class="row g-4 justify-content-center">
             @{
                 var features = new[] {
-                    new { Num = "01", Title = "Free Icon Plugin" },
-                    new { Num = "02", Title = "Free 6 Month Support" },
-                    new { Num = "03", Title = "Customer Strategy" },
-                    new { Num = "04", Title = "Best Premium Image" },
-                    new { Num = "05", Title = "Most Advanced Features" },
-                    new { Num = "06", Title = "Very Reasonable Price" }
+                    new { Num = "01", Title = "Diseño de Vanguardia", Desc = "Interfaces intuitivas y estéticas que atrapan al usuario desde el primer segundo." },
+                    new { Num = "02", Title = "Soporte Continuo", Desc = "Asistencia técnica 24/7 y mantenimiento para que tu sistema nunca se detenga." },
+                    new { Num = "03", Title = "Estrategia de Clientes", Desc = "Planes de marketing digital enfocados en conversión y fidelización de tu audiencia." },
+                    new { Num = "04", Title = "Desarrollo Escalable", Desc = "Arquitectura robusta que crece junto con tu negocio sin comprometer el rendimiento." },
+                    new { Num = "05", Title = "Tecnología Avanzada", Desc = "Utilizamos los frameworks más modernos para garantizar velocidad y seguridad." },
+                    new { Num = "06", Title = "Precios Competitivos", Desc = "Soluciones de nivel empresarial al mejor valor, maximizando tu presupuesto." }
                 };
             }
             @foreach(var item in features)
@@ -181,7 +181,7 @@
                     <div class="reason-card h-100">
                         <div class="reason-number">@item.Num</div>
                         <h5 class="fw-bold mb-3">@item.Title</h5>
-                        <p class="text-secondary small mb-0">Nullam ullamcorper condimentum urna eu accumsan.</p>
+                        <p class="text-secondary small mb-0">@item.Desc</p>
                     </div>
                 </div>
             }
@@ -189,59 +189,7 @@
     </div>
 </section>
 
-<!-- Blog Section -->
-<section id="blog" class="py-5 my-5">
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <span class="text-primary fw-bold mb-2 d-block" data-aos="fade-down">-Our Blog-</span>
-            <h2 class="fw-bold fs-1 mb-3" id="latestPostsTitle" data-aos="fade-up">Latest Posts</h2>
-            <p class="text-secondary mx-auto" style="max-width: 500px;" data-aos="fade-up" data-aos-delay="100">
-                Insights and updates from our team.
-            </p>
-        </div>
-        <div class="row g-4 justify-content-center">
-            @if (Model != null && Model.BlogPosts != null && Model.BlogPosts.Any())
-            {
-                var delays = new[] { 0, 150, 300 };
-                for (int i = 0; i < Model.BlogPosts.Count(); i++)
-                {
-                    var post = Model.BlogPosts.ElementAt(i);
-                    var delay = i < delays.Length ? delays[i] : 300;
-                    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="@delay">
-                        <div class="blog-card h-100">
-                            @if (!string.IsNullOrEmpty(post.ImageUrl))
-                            {
-                                <div class="blog-card-image">
-                                    <img src="@post.ImageUrl" alt="@post.Title">
-                                </div>
-                            }
-                            <div class="blog-card-body">
-                                <span class="blog-date text-secondary small">@post.PublishedAt.ToString("MMMM dd, yyyy")</span>
-                                <h5 class="fw-bold mt-2 mb-2">
-                                    <a asp-controller="Blog" asp-action="Details" asp-route-slug="@post.Slug" class="text-dark text-decoration-none">@post.Title</a>
-                                </h5>
-                                <p class="text-secondary small mb-3">@post.Excerpt</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="small text-secondary">By @post.Author</span>
-                                    <a asp-controller="Blog" asp-action="Details" asp-route-slug="@post.Slug" class="text-primary fw-bold small text-decoration-none">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="col-12 text-center py-5">
-                    <p class="text-secondary">No blog posts yet. Check back soon!</p>
-                </div>
-            }
-        </div>
-        <div class="text-center mt-5">
-            <a asp-controller="Blog" asp-action="Index" class="btn btn-primary px-4 py-2 btn-premium">VIEW ALL POSTS</a>
-        </div>
-    </div>
-</section>
+
 
 @section Scripts {
     <script>
@@ -673,6 +621,120 @@
                     }
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section id="testimonials" class="py-5 bg-light">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold mb-2 d-block" data-aos="fade-down"><i class="fa-solid fa-minus me-2"></i>Testimonials<i class="fa-solid fa-minus ms-2"></i></span>
+            <h2 class="fw-bold fs-1 mb-3" data-aos="fade-up">What Our Clients Say</h2>
+            <p class="text-secondary mx-auto" style="max-width: 600px;" data-aos="fade-up" data-aos-delay="100">
+                Our clients' success is our best introduction. Discover how we have helped other brands scale and transform their digital businesses.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            @{
+                var testimonials = new[] {
+                    new { 
+                        Name = "Laura Gómez", 
+                        Role = "Marketing Director, TechCorp", 
+                        Content = "Working with Holix completely transformed our online presence. The UX/UI design is top-notch and we managed to increase our conversions by 45% in just two months. Highly recommended!",
+                        Image = "https://ui-avatars.com/api/?name=Laura+Gomez&background=0D8ABC&color=fff&size=100"
+                    },
+                    new { 
+                        Name = "Carlos Martínez", 
+                        Role = "CEO, InnovaSolutions", 
+                        Content = "The technical architecture they developed for our mobile application exceeded all our expectations. They are a highly professional team that understands both business and technology.",
+                        Image = "https://ui-avatars.com/api/?name=Carlos+Martinez&background=10B981&color=fff&size=100"
+                    },
+                    new { 
+                        Name = "Sofía Ruiz", 
+                        Role = "Founder, EcoStore", 
+                        Content = "From day 1, the Holix team demonstrated an exceptional level of commitment. Their digital marketing strategy quickly positioned us in the market and our ROI multiplied.",
+                        Image = "https://ui-avatars.com/api/?name=Sofia+Ruiz&background=F59E0B&color=fff&size=100"
+                    }
+                };
+            }
+            @foreach(var (testimonial, index) in testimonials.Select((t, i) => (t, i)))
+            {
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="@(index * 100)">
+                    <div class="testimonial-card p-4 h-100 d-flex flex-column">
+                        <div class="d-flex mb-3 text-warning fs-5">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-secondary mb-4 flex-grow-1" style="font-style: italic;">"@testimonial.Content"</p>
+                        <div class="d-flex align-items-center">
+                            <img src="@testimonial.Image" alt="@testimonial.Name" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                            <div>
+                                <h6 class="fw-bold mb-0">@testimonial.Name</h6>
+                                <small class="text-secondary">@testimonial.Role</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Blog Section -->
+<section id="blog" class="py-5 my-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold mb-2 d-block" data-aos="fade-down">-Our Blog-</span>
+            <h2 class="fw-bold fs-1 mb-3" id="latestPostsTitle" data-aos="fade-up">Latest Posts</h2>
+            <p class="text-secondary mx-auto" style="max-width: 500px;" data-aos="fade-up" data-aos-delay="100">
+                Insights and updates from our team.
+            </p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            @if (Model != null && Model.BlogPosts != null && Model.BlogPosts.Any())
+            {
+                var delays = new[] { 0, 150, 300 };
+                for (int i = 0; i < Model.BlogPosts.Count(); i++)
+                {
+                    var post = Model.BlogPosts.ElementAt(i);
+                    var delay = i < delays.Length ? delays[i] : 300;
+                    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="@delay">
+                        <div class="blog-card h-100">
+                            @if (!string.IsNullOrEmpty(post.ImageUrl))
+                            {
+                                <div class="blog-card-image">
+                                    <img src="@post.ImageUrl" alt="@post.Title">
+                                </div>
+                            }
+                            <div class="blog-card-body">
+                                <span class="blog-date text-secondary small">@post.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                                <h5 class="fw-bold mt-2 mb-2">
+                                    <a asp-controller="Blog" asp-action="Details" asp-route-slug="@post.Slug" class="text-dark text-decoration-none">@post.Title</a>
+                                </h5>
+                                <p class="text-secondary small mb-3">@post.Excerpt</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="small text-secondary">By @post.Author</span>
+                                    <a asp-controller="Blog" asp-action="Details" asp-route-slug="@post.Slug" class="text-primary fw-bold small text-decoration-none">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center py-5">
+                    <p class="text-secondary">No blog posts yet. Check back soon!</p>
+                </div>
+            }
+        </div>
+        <div class="text-center mt-5">
+            <a asp-controller="Blog" asp-action="Index" class="btn btn-primary px-4 py-2 btn-premium">VIEW ALL POSTS</a>
         </div>
     </div>
 </section>
