@@ -30,7 +30,7 @@
     <header>
         <nav class="navbar navbar-expand-lg fixed-top py-3">
             <div class="container">
-                <a class="navbar-brand fw-bold text-dark fs-3" style="letter-spacing: -1px;" asp-area="" asp-controller="Home" asp-action="Index">Holix</a>
+                <a class="navbar-brand fw-bold text-dark fs-3" style="letter-spacing: -1px;" asp-area="" asp-controller="Home" asp-action="Index" id="navbarLogo"><span class="logo-letter">H</span><span class="logo-letter logo-o">o</span><span class="logo-letter">l</span><span class="logo-letter">i</span><span class="logo-letter">x</span></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -41,12 +41,13 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="services">Services</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="features">Features</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="testimonials">Testimonials</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/#portfolio">Portfolio</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="blog">Blog</a></li>
                         <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="contact">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="d-none d-lg-block">
-                    <a asp-controller="Home" asp-action="Index" asp-fragment="contact" class="btn btn-outline-primary rounded-pill px-4" style="border-width: 2px;">LETS TALK</a>
+                    <a asp-controller="Home" asp-action="Index" asp-fragment="contact" class="btn btn-outline-primary rounded-pill px-4 btn-glow-pulse lets-talk-glow" style="border-width: 2px;">LETS TALK</a>
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
                         <div class="dropdown d-inline-block ms-2">
@@ -66,7 +67,7 @@
                     }
                     else
                     {
-                        <a asp-controller="Auth" asp-action="Login" class="btn btn-link text-dark ms-2 text-decoration-none fw-bold">Login</a>
+                        <a asp-controller="Auth" asp-action="Login" class="btn btn-link text-dark ms-2 text-decoration-none fw-bold nav-link-login">Login</a>
                     }
                 </div>
             </div>
@@ -128,6 +129,239 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>AOS.init({ duration: 800, once: true });</script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script>
+        (function() {
+            var nav = document.querySelector('.navbar');
+            if (nav) {
+                function onScroll() {
+                    if (window.scrollY > 20) nav.classList.add('navbar-scrolled');
+                    else nav.classList.remove('navbar-scrolled');
+                }
+                window.addEventListener('scroll', onScroll, { passive: true });
+                onScroll();
+            }
+        })();
+
+        (function() {
+            var navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+            function setActive(link) {
+                navLinks.forEach(function(l) { l.classList.remove('active-link'); });
+                if (link) link.classList.add('active-link');
+            }
+
+            /* — Initial active from URL (fallback for separate pages) — */
+            (function init() {
+                var path = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
+                var hash = window.location.hash.replace('#', '');
+                var matched = null;
+                navLinks.forEach(function(link) {
+                    var href = link.getAttribute('href');
+                    if (!href) return;
+                    var hrefPath = href.split('#')[0].toLowerCase().replace(/\/+$/, '') || '/';
+                    var hrefHash = href.split('#')[1];
+                    if (hrefPath === path && (!hrefHash || hrefHash === hash)) {
+                        matched = link;
+                    }
+                });
+                if (matched) setActive(matched);
+            })();
+
+            /* — Instant click feedback — */
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    setActive(link);
+                });
+            });
+        })();
+
+        (function() {
+            var logoLetters = document.querySelectorAll('.logo-letter');
+            if (!logoLetters.length) return;
+            var logo = document.getElementById('navbarLogo');
+            if (!logo) return;
+            logo.addEventListener('mouseenter', function() {
+                logoLetters.forEach(function(letter, idx) {
+                    setTimeout(function() {
+                        letter.classList.add('logo-letter-hover');
+                    }, idx * 50);
+                });
+            });
+            logo.addEventListener('mouseleave', function() {
+                logoLetters.forEach(function(letter) {
+                    letter.classList.remove('logo-letter-hover');
+                });
+            });
+        })();
+
+        (function() {
+            var navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            if (!navLinks.length) return;
+            var ray = document.createElement('div');
+            ray.id = 'navRay';
+            document.body.appendChild(ray);
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    var rect = this.getBoundingClientRect();
+                    var cx = rect.left + rect.width / 2;
+                    var cy = rect.top + rect.height / 2;
+                    ray.style.left = cx + 'px';
+                    ray.style.top = cy + 'px';
+                    ray.classList.remove('nav-ray-active');
+                    void ray.offsetWidth;
+                    ray.classList.add('nav-ray-active');
+                });
+            });
+            ray.addEventListener('animationend', function() { this.classList.remove('nav-ray-active'); });
+        })();
+
+        (function() {
+            var navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            if (!navLinks.length) return;
+            navLinks.forEach(function(link) {
+                var text = link.textContent;
+                link.textContent = '';
+                for (var i = 0; i < text.length; i++) {
+                    var ch = text[i];
+                    if (ch === ' ') {
+                        var space = document.createElement('span');
+                        space.className = 'nav-letter';
+                        space.innerHTML = '&nbsp;';
+                        link.appendChild(space);
+                    } else {
+                        var span = document.createElement('span');
+                        span.className = 'nav-letter';
+                        span.textContent = ch;
+                        link.appendChild(span);
+                    }
+                }
+                link.addEventListener('mouseenter', function() {
+                    var letters = this.querySelectorAll('.nav-letter');
+                    letters.forEach(function(l, idx) {
+                        l.style.transitionDelay = (idx * 30) + 'ms';
+                        l.classList.add('nav-letter-hover');
+                    });
+                });
+                link.addEventListener('mouseleave', function() {
+                    var letters = this.querySelectorAll('.nav-letter');
+                    letters.forEach(function(l) {
+                        l.classList.remove('nav-letter-hover');
+                        l.style.transitionDelay = '0ms';
+                    });
+                });
+            });
+        })();
+
+        /* ── Global Breathing Text Animation ── */
+        (function() {
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (document.querySelector('.breath-large')) return;
+
+            function skip(el) {
+                return !el || el.closest('.navbar, footer, .particle-canvas');
+            }
+
+            function hasBreath(el) {
+                return el.matches('.breath-large, .breath-medium, .breath-small, .breath-icon, .breath-card, .breath-button, .hero-float-label, .hero-float-title, .hero-float-desc, .hero-shape, .lets-talk-glow');
+            }
+
+            /* Text elements */
+            var textTags = document.querySelectorAll('h1, h2, h3, h4, h5, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+            textTags.forEach(function(el) {
+                if (skip(el) || hasBreath(el)) return;
+                if (!el.textContent.trim()) return;
+                var tag = el.tagName.toLowerCase();
+                var cls;
+                if (tag === 'h1' || tag === 'h2') cls = 'breath-large';
+                else if (tag === 'h3' || tag === 'h4' || tag === 'h5') cls = 'breath-medium';
+                else cls = 'breath-small';
+                el.classList.add(cls);
+                el.style.animationDelay = (Math.random() * 2) + 's';
+            });
+
+            /* Icons & small UI */
+            var icons = document.querySelectorAll('.service-icon-container, i.fa-solid, i.fa-regular, i.fa-brands, .form-label');
+            icons.forEach(function(el) {
+                if (skip(el) || hasBreath(el)) return;
+                el.classList.add('breath-icon');
+                el.style.animationDelay = (Math.random() * 2) + 's';
+            });
+
+            /* Cards */
+            var cards = document.querySelectorAll('.card');
+            cards.forEach(function(el) {
+                if (skip(el) || hasBreath(el)) return;
+                el.classList.add('breath-card');
+                el.style.animationDelay = (Math.random() * 2) + 's';
+            });
+
+            /* Buttons (except LET'S TALK) */
+            var btns = document.querySelectorAll('button, a.btn');
+            btns.forEach(function(el) {
+                if (skip(el) || hasBreath(el)) return;
+                el.classList.add('breath-button');
+                el.style.animationDelay = (Math.random() * 2) + 's';
+            });
+
+            /* Input fields */
+            var inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(function(el) {
+                if (skip(el) || hasBreath(el)) return;
+                el.classList.add('breath-small');
+                el.style.animationDelay = (Math.random() * 2) + 's';
+            });
+        })();
+
+        /* ── Floating Green Particles ── */
+        (function() {
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            var sections = ['home', 'about', 'features', 'testimonials', 'contact'];
+            sections.forEach(function(id) {
+                var sec = document.getElementById(id);
+                if (!sec || sec.querySelector('.particle-canvas')) return;
+                if (sec.style.position !== 'relative') sec.style.position = 'relative';
+                if (sec.style.overflow !== 'hidden') sec.style.overflow = 'hidden';
+                var container = document.createElement('div');
+                container.className = 'particle-canvas';
+                sec.insertBefore(container, sec.firstChild);
+                var count = 6 + Math.floor(Math.random() * 4);
+                var shapes = ['circle', 'circle', 'circle', 'line', 'plus'];
+                for (var i = 0; i < count; i++) {
+                    var dot = document.createElement('div');
+                    dot.className = 'particle-dot';
+                    var shape = shapes[i % shapes.length];
+                    var size = 4 + Math.random() * 8;
+                    dot.style.left = (5 + Math.random() * 90) + '%';
+                    dot.style.top = (5 + Math.random() * 90) + '%';
+                    dot.style.animationDelay = -(Math.random() * 6) + 's';
+                    dot.style.animationDuration = (5 + Math.random() * 4) + 's';
+                    if (shape === 'circle') {
+                        dot.style.width = size + 'px';
+                        dot.style.height = size + 'px';
+                        dot.style.borderRadius = '50%';
+                        dot.style.background = 'rgba(34,197,94,0.15)';
+                    } else if (shape === 'line') {
+                        dot.style.width = (size * 2) + 'px';
+                        dot.style.height = '2px';
+                        dot.style.borderRadius = '2px';
+                        dot.style.background = 'rgba(34,197,94,0.15)';
+                        dot.style.transform = 'rotate(' + (Math.random() * 180) + 'deg)';
+                    } else if (shape === 'plus') {
+                        dot.innerHTML = '+';
+                        dot.style.fontSize = (size + 4) + 'px';
+                        dot.style.color = 'rgba(34,197,94,0.12)';
+                        dot.style.fontWeight = '300';
+                        dot.style.background = 'none';
+                        dot.style.width = 'auto';
+                        dot.style.height = 'auto';
+                    }
+                    container.appendChild(dot);
+                }
+            });
+        })();
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

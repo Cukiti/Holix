@@ -6,10 +6,10 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-5">
-                <div class="card border-0 shadow-lg" style="border-radius: 12px; overflow: hidden;">
+                <div class="card border-0 shadow-lg auth-card-entrance" style="border-radius: 12px; overflow: hidden;">
                     <div class="card-body p-5">
                         <div class="text-center mb-4">
-                            <h2 class="fw-bold text-dark">Únete a Holix</h2>
+                            <h2 class="fw-bold text-dark" id="registerTitle">Únete a Holix</h2>
                             <p class="text-secondary small">Crea tu cuenta de forma rápida y sencilla</p>
                         </div>
 
@@ -18,17 +18,17 @@
                         <form id="firebaseRegisterForm" onsubmit="return false;">
                             <div class="mb-3">
                                 <label for="name" class="form-label text-secondary fw-bold">Nombre Completo</label>
-                                <input type="text" class="form-control form-control-lg" id="name" required placeholder="Juan Pérez" style="border-radius: 8px;">
+                                <input type="text" class="form-control form-control-lg auth-input" id="name" required placeholder="Juan Pérez" style="border-radius: 8px;">
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label text-secondary fw-bold">Correo Electrónico</label>
-                                <input type="email" class="form-control form-control-lg" id="email" required placeholder="correo@ejemplo.com" style="border-radius: 8px;">
+                                <input type="email" class="form-control form-control-lg auth-input" id="email" required placeholder="correo@ejemplo.com" style="border-radius: 8px;">
                             </div>
                             <div class="mb-4">
                                 <label for="password" class="form-label text-secondary fw-bold">Contraseña</label>
-                                <input type="password" class="form-control form-control-lg" id="password" required placeholder="********" style="border-radius: 8px;" minlength="6">
+                                <input type="password" class="form-control form-control-lg auth-input" id="password" required placeholder="********" style="border-radius: 8px;" minlength="6">
                             </div>
-                            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-3" id="registerBtn" style="border-radius: 8px;">
+                            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-3 auth-btn" id="registerBtn" style="border-radius: 8px;">
                                 <span id="registerBtnText">Crear Cuenta</span>
                                 <span id="registerBtnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                             </button>
@@ -36,7 +36,7 @@
 
                         <div class="text-center mt-3">
                             <p class="text-secondary small">
-                                ¿Ya tienes una cuenta? <a asp-controller="Auth" asp-action="Login" class="text-primary fw-bold text-decoration-none">Inicia sesión aquí</a>
+                                ¿Ya tienes una cuenta? <a asp-controller="Auth" asp-action="Login" class="text-primary fw-bold text-decoration-none auth-link">Inicia sesión aquí</a>
                             </p>
                         </div>
                     </div>
@@ -47,6 +47,56 @@
 </section>
 
 @section Scripts {
+    <script>
+        (function() {
+            var title = document.getElementById('registerTitle');
+            if (title) {
+                var text = title.textContent;
+                title.textContent = '';
+                for (var i = 0; i < text.length; i++) {
+                    var ch = text[i];
+                    if (ch === ' ') {
+                        var space = document.createElement('span');
+                        space.className = 'letter-span';
+                        space.innerHTML = '&nbsp;';
+                        title.appendChild(space);
+                    } else {
+                        var span = document.createElement('span');
+                        span.className = 'letter-span';
+                        span.textContent = ch;
+                        title.appendChild(span);
+                    }
+                }
+                var letters = title.querySelectorAll('.letter-span');
+                letters.forEach(function(span, idx) {
+                    setTimeout(function() { span.classList.add('visible'); }, 200 + idx * 40);
+                });
+            }
+        })();
+        (function() {
+            function wrapWords(root) {
+                var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                var nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+                nodes.forEach(function(node) {
+                    var text = node.textContent;
+                    var parts = text.split(/(\s+)/);
+                    if (parts.length < 2) return;
+                    var frag = document.createDocumentFragment();
+                    for (var i = 0; i < parts.length; i++) {
+                        if (parts[i].trim() === '') { frag.appendChild(document.createTextNode(parts[i])); }
+                        else { var span = document.createElement('span'); span.className = 'hover-word'; span.textContent = parts[i]; frag.appendChild(span); }
+                    }
+                    node.parentNode.replaceChild(frag, node);
+                });
+            }
+            var targets = document.querySelectorAll('p, span, label, a, small');
+            targets.forEach(function(el) {
+                if (!el || el.closest('.hover-word') || el.querySelector('.hover-word') || el.closest('.letter-span')) return;
+                wrapWords(el);
+            });
+        })();
+    </script>
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";

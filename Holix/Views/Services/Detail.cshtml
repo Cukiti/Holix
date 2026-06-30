@@ -1,0 +1,299 @@
+@model Holix.Models.Service
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<canvas id="portfolioBgCanvas"></canvas>
+<div id="scroll-progress"></div>
+
+<div class="blog-bg-circles">
+    <div class="blog-bg-circle blog-bg-circle-1"></div>
+    <div class="blog-bg-circle blog-bg-circle-2"></div>
+</div>
+
+<section class="blog-page-section">
+    <div class="container">
+        <div class="row justify-content-center position-relative">
+            <div class="col-lg-8" data-aos="fade-up">
+                <div class="mb-4">
+                    <a asp-controller="Home" asp-action="Index" class="text-decoration-none text-secondary small breadcrumb-link"><i class="fa-solid fa-home me-1"></i>Home</a>
+                    <span class="text-secondary small mx-2">/</span>
+                    <span class="text-secondary small breadcrumb-link">@Model.Title</span>
+                </div>
+
+                <div class="service-detail-header mb-4">
+                    <i class="@Model.Icon service-icon-detail" id="serviceIcon"></i>
+                    <h1 class="fw-bold display-5 mb-0 lh-1 post-title">@Model.Title</h1>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="mb-5 rounded-4 overflow-hidden shadow-sm parallax-wrap">
+                        <div class="parallax-image" style="background-image: url('@Model.ImageUrl');"></div>
+                    </div>
+                }
+
+                <div class="blog-content fs-5">
+                    @Html.Raw(Model.FullDescription)
+                </div>
+
+                <div id="content-end-marker"></div>
+
+                <hr class="my-5">
+
+                <div class="d-flex justify-content-center gap-2">
+                    <a href="/#services" class="btn btn-outline-primary rounded-pill px-4 btn-premium d-inline-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-arrow-left me-2"></i>Back to Services
+                    </a>
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary rounded-pill px-3 btn-premium d-inline-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-home me-1"></i>Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="back-to-top" class="back-to-top-btn">
+    <i class="fa-solid fa-arrow-up"></i>
+</div>
+
+<div id="reading-toast" class="reading-toast">
+    <i class="fa-regular fa-circle-check me-2"></i> Amazing service! 🚀
+</div>
+
+@section Scripts {
+    <script>
+        (function() {
+            var curtain = document.createElement('div');
+            curtain.id = 'pageCurtain';
+            document.body.prepend(curtain);
+            requestAnimationFrame(function() {
+                curtain.style.transform = 'translateY(0)';
+            });
+            setTimeout(function() {
+                curtain.style.transition = 'transform 0.3s ease-out';
+                curtain.style.transform = 'translateY(-100%)';
+            }, 300);
+            setTimeout(function() {
+                curtain.remove();
+            }, 600);
+        })();
+
+        (function() {
+            var title = document.querySelector('.post-title');
+            if (title) {
+                var text = title.textContent;
+                title.textContent = '';
+                for (var i = 0; i < text.length; i++) {
+                    var ch = text[i];
+                    if (ch === ' ') {
+                        var space = document.createElement('span');
+                        space.className = 'letter-span';
+                        space.innerHTML = '&nbsp;';
+                        title.appendChild(space);
+                    } else {
+                        var span = document.createElement('span');
+                        span.className = 'letter-span';
+                        span.textContent = ch;
+                        title.appendChild(span);
+                    }
+                }
+                var letters = title.querySelectorAll('.letter-span');
+                letters.forEach(function(span, idx) {
+                    setTimeout(function() { span.classList.add('visible'); }, 600 + idx * 40);
+                });
+            }
+        })();
+
+        (function() {
+            function wrapWords(root) {
+                var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                var nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+                nodes.forEach(function(node) {
+                    var text = node.textContent;
+                    var parts = text.split(/(\s+)/);
+                    if (parts.length < 2) return;
+                    var frag = document.createDocumentFragment();
+                    for (var i = 0; i < parts.length; i++) {
+                        if (parts[i].trim() === '') {
+                            frag.appendChild(document.createTextNode(parts[i]));
+                        } else {
+                            var span = document.createElement('span');
+                            span.className = 'hover-word';
+                            span.textContent = parts[i];
+                            frag.appendChild(span);
+                        }
+                    }
+                    node.parentNode.replaceChild(frag, node);
+                });
+            }
+            var targets = document.querySelectorAll('h1, h2, h3, h4, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+            targets.forEach(function(el) {
+                if (!el || el.closest('.hover-word') || el.classList.contains('post-title') || el.querySelector('.hover-word')) return;
+                wrapWords(el);
+            });
+        })();
+
+        (function() {
+            var bar = document.getElementById('scroll-progress');
+            if (!bar) return;
+            function update() {
+                var scrollTop = window.scrollY;
+                var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+                bar.style.width = pct + '%';
+            }
+            window.addEventListener('scroll', update);
+            update();
+        })();
+
+        (function() {
+            var el = document.querySelector('.parallax-image');
+            if (!el) return;
+            function update() {
+                var scrollY = window.scrollY;
+                el.style.backgroundPositionY = (50 - scrollY * 0.04) + '%';
+            }
+            window.addEventListener('scroll', update);
+            update();
+        })();
+
+        (function() {
+            var backBtn = document.getElementById('back-to-top');
+            if (!backBtn) return;
+            function toggle() {
+                if (window.scrollY > 300) {
+                    backBtn.classList.add('visible');
+                } else {
+                    backBtn.classList.remove('visible');
+                }
+            }
+            window.addEventListener('scroll', toggle);
+            toggle();
+            backBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
+
+        (function() {
+            var marker = document.getElementById('content-end-marker');
+            if (!marker) return;
+            var toast = document.getElementById('reading-toast');
+            if (!toast) return;
+            var obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        toast.classList.add('visible');
+                        setTimeout(function() { toast.classList.remove('visible'); }, 3000);
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            obs.observe(marker);
+        })();
+
+        (function() {
+            var canvas = document.getElementById('portfolioBgCanvas');
+            if (!canvas) return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { canvas.style.display = 'none'; return; }
+            var ctx = canvas.getContext('2d');
+            var w, h, lines = [];
+            function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+            window.addEventListener('resize', resize);
+            resize();
+            function createLine() {
+                return {
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    len: 80 + Math.random() * 120,
+                    speed: 0.3 + Math.random() * 0.5,
+                    opacity: 0.03 + Math.random() * 0.04,
+                    direction: Math.random() > 0.5 ? 1 : -1
+                };
+            }
+            for (var i = 0; i < 12; i++) lines.push(createLine());
+            function update() {
+                for (var i = 0; i < lines.length; i++) {
+                    var l = lines[i];
+                    l.x += l.speed * l.direction;
+                    if (l.x > w + l.len) { l.x = -l.len; l.y = Math.random() * h; }
+                    if (l.x < -l.len) { l.x = w + l.len; l.y = Math.random() * h; }
+                }
+            }
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                for (var i = 0; i < lines.length; i++) {
+                    var l = lines[i];
+                    ctx.strokeStyle = 'rgba(34, 197, 94, ' + l.opacity + ')';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(l.x, l.y);
+                    ctx.lineTo(l.x + l.len * l.direction, l.y);
+                    ctx.stroke();
+                }
+            }
+            function loop() { update(); draw(); requestAnimationFrame(loop); }
+            loop();
+        })();
+
+        (function() {
+            var headings = document.querySelectorAll('.blog-content h2, .blog-content h3');
+            if (!headings.length) return;
+            headings.forEach(function(h) {
+                if (!h.id) h.id = 'toc-heading-' + Math.random().toString(36).slice(2, 8);
+                var wrap = document.createElement('div');
+                wrap.className = 'heading-underline-wrap';
+                h.parentNode.insertBefore(wrap, h);
+                wrap.appendChild(h);
+                var line = document.createElement('div');
+                line.className = 'heading-underline';
+                wrap.appendChild(line);
+                var obs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            line.classList.add('heading-underline-visible');
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                obs.observe(wrap);
+            });
+        })();
+
+        (function() {
+            var blockquotes = document.querySelectorAll('.blog-content blockquote');
+            if (!blockquotes.length) return;
+            blockquotes.forEach(function(bq) {
+                var border = document.createElement('div');
+                border.className = 'bq-border';
+                bq.style.position = 'relative';
+                bq.insertBefore(border, bq.firstChild);
+                var obs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            border.classList.add('bq-border-visible');
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                obs.observe(bq);
+            });
+        })();
+
+        /* — Service icon click bounce — */
+        (function() {
+            var icon = document.getElementById('serviceIcon');
+            if (!icon) return;
+            icon.addEventListener('click', function() {
+                this.classList.remove('icon-bounce-click');
+                void this.offsetWidth;
+                this.classList.add('icon-bounce-click');
+            });
+            icon.addEventListener('animationend', function() {
+                this.classList.remove('icon-bounce-click');
+            });
+        })();
+    </script>
+}

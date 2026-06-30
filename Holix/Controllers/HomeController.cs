@@ -17,28 +17,281 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        // Seed initial data if empty
-        if (!await _context.Services.AnyAsync())
+        // Seed services, faqs, testimonials if empty
+        if (!await _context.Services.AnyAsync() || !await _context.Services.AnyAsync(s => !string.IsNullOrEmpty(s.Slug)))
         {
+            _context.Services.RemoveRange(_context.Services);
+            await _context.SaveChangesAsync();
             _context.Services.AddRange(
-                new Service { Title = "UI/UX Creative Design", Description = "Designing intuitive and stunning user interfaces.", Icon = "fa-solid fa-palette" },
-                new Service { Title = "App Development", Description = "Native and cross-platform mobile applications.", Icon = "fa-solid fa-mobile-screen" },
-                new Service { Title = "Professional Content Writer", Description = "Compelling copy that drives conversions.", Icon = "fa-solid fa-pen-nib" },
-                new Service { Title = "Graphic Design", Description = "Visual identities that leave a lasting mark.", Icon = "fa-solid fa-vector-square" }
+                new Service
+                {
+                    Title = "UI/UX Creative Design",
+                    Slug = "ui-ux-creative-design",
+                    Description = "Designing intuitive and stunning user interfaces.",
+                    FullDescription = "<h2>Crafting Experiences That Connect</h2><p>UI/UX design is about far more than making things look pretty — it is about creating intuitive, accessible, and delightful experiences that guide users effortlessly toward their goals. Our design process begins with deep user research to understand motivations, pain points, and behaviors before a single pixel is placed.</p><h3>Research-Driven Design</h3><p>We conduct user interviews, competitive audits, and usability testing to ground every design decision in real data. This research phase ensures that the interfaces we build solve actual problems rather than assumed ones. Our team synthesizes findings into user personas and journey maps that inform the entire design process.</p><h3>Wireframing and Prototyping</h3><p>From low-fidelity wireframes to high-fidelity interactive prototypes, we iterate rapidly to validate concepts before development begins. Tools like Figma and Framer allow us to create clickable prototypes that feel like the real product, enabling stakeholders and users to provide meaningful feedback early in the process.</p><h2>Visual Design and Brand Integration</h2><p>Every visual element — from typography and color to spacing and motion — is purposefully chosen to reinforce your brand identity while maximizing usability. We design responsive interfaces that look and feel native across every device, from mobile phones to large desktop displays.</p><h2>Measuring Success</h2><p>Our work doesn't end at launch. We establish baseline metrics for key UX indicators — task completion rate, time on task, error rate, and user satisfaction — then measure improvement after each design iteration. Our clients typically see 40-60% improvement in core usability metrics within the first quarter.</p>",
+                    Icon = "fa-solid fa-palette",
+                    ImageUrl = "https://picsum.photos/seed/service1/800/500"
+                },
+                new Service
+                {
+                    Title = "App Development",
+                    Slug = "app-development",
+                    Description = "Native and cross-platform mobile applications.",
+                    FullDescription = "<h2>Building Powerful Mobile Experiences</h2><p>Mobile applications are the primary way most users interact with digital services today. Whether you need a native iOS or Android app, or a cross-platform solution that reaches both ecosystems simultaneously, our development team has the expertise to deliver exceptional results.</p><h3>Cross-Platform with Native Performance</h3><p>We leverage Flutter and React Native to build apps that run beautifully on both iOS and Android from a single codebase, without sacrificing performance. Our cross-platform apps achieve 95%+ code sharing while maintaining native look, feel, and performance on each platform.</p><h3>Native Development</h3><p>For projects that demand platform-specific features — ARKit, advanced camera controls, or deep system integrations — we build native apps using Swift for iOS and Kotlin for Android. Native development provides unrestricted access to platform APIs and the highest possible performance.</p><h2>Full Lifecycle Management</h2><p>From concept and architecture through development, testing, deployment, and ongoing maintenance, we manage the entire app lifecycle. Our CI/CD pipelines ensure rapid, reliable releases, and we provide post-launch analytics and monitoring to keep your app performing at its best.</p><h2>Real-World Results</h2><p>The apps we build consistently achieve 4.5+ star ratings on app stores. Our clients report average user retention improvements of 35% after launch, with many apps reaching top rankings in their categories within the first quarter.</p>",
+                    Icon = "fa-solid fa-mobile-screen",
+                    ImageUrl = "https://picsum.photos/seed/service2/800/500"
+                },
+                new Service
+                {
+                    Title = "Professional Content Writer",
+                    Slug = "professional-content-writer",
+                    Description = "Compelling copy that drives conversions.",
+                    FullDescription = "<h2>Words That Drive Action</h2><p>Great content is the bridge between your brand and your audience. Our professional copywriters craft compelling narratives that capture attention, build trust, and drive conversions across every channel — from website copy and blog posts to email campaigns and social media.</p><h3>SEO-Optimized Content</h3><p>Every piece of content we produce is optimized for search engines without sacrificing readability or brand voice. We conduct thorough keyword research, structure content for featured snippets, and follow Google's E-E-A-T guidelines to help your pages rank higher and attract qualified organic traffic.</p><h3>Brand Voice Development</h3><p>We work closely with your team to define and document a distinctive brand voice that sets you apart from competitors. Whether your brand is professional and authoritative or friendly and conversational, we ensure consistency across every piece of content your audience encounters.</p><h2>Content Strategy and Planning</h2><p>Beyond individual pieces, we develop comprehensive content strategies that align with your business goals. This includes editorial calendars, pillar page strategies, content gap analysis, and performance measurement frameworks that ensure your content investment delivers measurable ROI.</p><h2>Proven Impact</h2><p>Our content clients see an average 180% increase in organic traffic within six months, with many achieving first-page rankings for competitive keywords. Blog content we produce generates 3x more leads than paid advertising for the same investment.</p>",
+                    Icon = "fa-solid fa-pen-nib",
+                    ImageUrl = "https://picsum.photos/seed/service3/800/500"
+                },
+                new Service
+                {
+                    Title = "Graphic Design",
+                    Slug = "graphic-design",
+                    Description = "Visual identities that leave a lasting mark.",
+                    FullDescription = "<h2>Visual Identity That Stands Out</h2><p>In a crowded marketplace, your visual identity is often the first — and most lasting — impression you make on potential customers. Our graphic design team creates cohesive, memorable visual systems that communicate your brand's values and personality at every touchpoint.</p><h3>Logo and Brand Identity</h3><p>We design versatile logo systems that work across digital, print, and environmental applications. Each identity includes primary and secondary logos, color palettes, typography systems, iconography, and comprehensive brand guidelines that ensure consistent application across your entire organization.</p><h3>Print and Digital Design</h3><p>From business cards and brochures to social media templates and presentation decks, we create visually compelling assets that maintain brand consistency across all media. Our designs are production-ready, with proper color profiles, bleeds, and file formats for every output channel.</p><h2>Packaging and Environmental Design</h2><p>For physical products, we design packaging that captures attention on crowded shelves and communicates product value instantly. We also create environmental graphics for retail spaces, trade show booths, and office environments that immerse visitors in your brand experience.</p><h2>The Results Speak</h2><p>Brands we've worked with report 45% average improvement in brand recall after implementing our visual identity systems. Our packaging designs have helped clients achieve 30%+ shelf impact increases and multiple industry design awards.</p>",
+                    Icon = "fa-solid fa-vector-square",
+                    ImageUrl = "https://picsum.photos/seed/service4/800/500"
+                }
             );
             _context.FaqItems.AddRange(
                 new FaqItem { Question = "What does a UX strategy include?", Answer = "Research, wireframing, user testing, and final high-fidelity design.", Order = 1 },
                 new FaqItem { Question = "How long does app development take?", Answer = "Depending on complexity, an app can take anywhere from 2 to 6 months.", Order = 2 },
                 new FaqItem { Question = "Do you provide ongoing support?", Answer = "Yes, we offer maintenance packages to keep your platform updated.", Order = 3 }
             );
-            _context.Projects.AddRange(
-                new Project { Title = "Fintech Dashboard", ClientName = "BankCorp", Category = "Web App", Description = "Modern banking analytics dashboard.", ImageUrl = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop", Technologies = "React, C#" },
-                new Project { Title = "E-Commerce App", ClientName = "ShopifyStore", Category = "Mobile App", Description = "A seamless shopping experience for iOS and Android.", ImageUrl = "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=2070&auto=format&fit=crop", Technologies = "Flutter, Firebase" }
-            );
             _context.Testimonials.AddRange(
                 new Testimonial { ClientName = "Sarah Jenkins", Company = "TechFlow", Content = "Holix transformed our digital presence completely. Outstanding work!", Rating = 5, AvatarUrl = "https://i.pravatar.cc/150?img=47" },
                 new Testimonial { ClientName = "Mark Stevenson", Company = "LogixCorp", Content = "Their team is incredibly professional and delivered beyond expectations.", Rating = 5, AvatarUrl = "https://i.pravatar.cc/150?img=11" }
             );
+            await _context.SaveChangesAsync();
+        }
+
+        // Seed 15 projects if fewer than 15
+        if (!await _context.Projects.AnyAsync() || await _context.Projects.CountAsync() < 15)
+        {
+            _context.Projects.RemoveRange(_context.Projects);
+            await _context.SaveChangesAsync();
+            var rng = new Random();
+            var allSeedProjects = new List<Project>
+            {
+                new()
+                {
+                    Title = "ShopWave E-Commerce Platform",
+                    Slug = "shopwave-ecommerce-platform",
+                    Client = "NexGen Retail Inc.",
+                    Category = "E-Commerce",
+                    Technologies = "Next.js, Stripe, PostgreSQL, Redis",
+                    Excerpt = "A high-performance e-commerce platform handling 50k+ daily transactions with real-time inventory and personalized recommendations.",
+                    Description = "<h2>Revolutionizing Online Retail</h2><p>ShopWave was built to handle peak traffic loads of 10,000 concurrent users while maintaining sub-second page load times. The platform features a headless architecture that decouples the frontend from the backend, allowing for rapid iteration and A/B testing.</p><h3>Personalized Shopping Experience</h3><p>Using machine learning algorithms, ShopWave delivers personalized product recommendations based on browsing history, purchase patterns, and seasonal trends. This resulted in a 34% increase in average order value.</p><h2>Real-Time Inventory Management</h2><p>Built on a real-time event-driven architecture using Redis and WebSockets, the inventory system updates across all channels instantaneously. This eliminated overselling and reduced fulfillment errors by 98%.</p><p>The platform processed over $12M in transactions in its first quarter, exceeding all performance targets set by the client.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj1/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "VaultPay Mobile Banking App",
+                    Slug = "vaultpay-mobile-banking-app",
+                    Client = "Vault Financial Group",
+                    Category = "Mobile App",
+                    Technologies = "React Native, Node.js, MongoDB, AWS",
+                    Excerpt = "A secure, intuitive mobile banking application with biometric authentication, real-time notifications, and AI-powered spending insights.",
+                    Description = "<h2>Banking Reimagined</h2><p>VaultPay brings enterprise-grade banking security to mobile devices with a consumer-friendly interface. The app supports multiple account types, fund transfers, bill payments, and investment tracking in a single unified experience.</p><h3>AI-Powered Financial Insights</h3><p>Integrated machine learning models analyze spending patterns to provide personalized budgeting advice, detect unusual transactions, and forecast future balances. Users reported a 27% improvement in savings after three months of use.</p><h2>Security First Architecture</h2><p>Biometric authentication, end-to-end encryption, and real-time fraud detection ensure that every transaction is protected. The app achieved SOC 2 Type II certification within six months of launch.</p><p>With over 100,000 downloads in the first month, VaultPay became the fastest-growing banking app in the region.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj2/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "Brand Identity Redesign for Lumina",
+                    Slug = "lumina-brand-identity-redesign",
+                    Client = "Lumina Cosmetics",
+                    Category = "Branding",
+                    Technologies = "Adobe Creative Suite, Figma, After Effects",
+                    Excerpt = "A complete brand identity overhaul including logo, packaging, digital presence, and brand guidelines for a premium cosmetics company.",
+                    Description = "<h2>A Fresh Vision for Beauty</h2><p>Lumina approached us with a desire to modernize their 15-year-old brand identity while retaining the equity built over years of customer loyalty. We conducted extensive market research and customer interviews to inform the creative direction.</p><h3>Visual Identity System</h3><p>The new identity features a refined logo system, an expanded color palette inspired by natural elements, custom typography, and a comprehensive set of brand assets that work across print, digital, and environmental applications.</p><h2>Digital-First Brand Experience</h2><p>We redesigned the e-commerce site and social media presence to reflect the new identity, resulting in a 52% increase in time on site and a 38% improvement in conversion rate across all digital channels.</p><p>The rebrand was featured in Communication Arts and received the 2025 Design Excellence Award for Brand Identity.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj3/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "DataPulse SaaS Dashboard",
+                    Slug = "datapulse-saas-dashboard",
+                    Client = "DataPulse Analytics",
+                    Category = "SaaS",
+                    Technologies = "React, D3.js, Python, FastAPI, TimescaleDB",
+                    Excerpt = "A real-time analytics dashboard processing millions of data points per second with interactive visualizations and customizable reporting.",
+                    Description = "<h2>Real-Time Analytics at Scale</h2><p>DataPulse is a full-featured SaaS platform that ingests, processes, and visualizes streaming data from hundreds of sources. The system handles over 5 million events per second with sub-100ms query latency.</p><h3>Interactive Visualization Engine</h3><p>Built with D3.js and WebGL, the visualization engine supports complex charts, heatmaps, geographic maps, and custom dashboard layouts. Users can drill down from high-level metrics to individual data points with zero lag.</p><h2>Enterprise-Grade Features</h2><p>Role-based access control, scheduled report generation, webhook integrations, and a RESTful API make DataPulse suitable for enterprises of any size. The platform achieved 99.99% uptime in its first year of operation.</p><p>DataPulse grew from 50 to 2,000+ paying customers within 18 months of launch, with an NPS score of 72.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj4/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "Saboré Restaurant Website",
+                    Slug = "sabore-restaurant-website",
+                    Client = "Saboré Dining Group",
+                    Category = "Web Design",
+                    Technologies = "Gatsby, WordPress, GSAP, Cloudflare",
+                    Excerpt = "An immersive restaurant website featuring a dynamic menu system, online reservations, and stunning food photography with smooth animations.",
+                    Description = "<h2>A Feast for the Eyes</h2><p>Saboré required a website that captured the sensory experience of dining at their award-winning restaurant. We created a visually rich site with full-screen hero imagery, parallax scrolling effects, and micro-animations that bring the brand to life.</p><h3>Dynamic Menu System</h3><p>The menu updates in real-time from a headless CMS, supporting seasonal rotations, dietary filters, and multilingual descriptions. Each dish features professional photography that loads progressively for optimal performance.</p><h2>Seamless Reservation Experience</h2><p>Integrated with OpenTable for real-time table availability, the reservation flow is frictionless and mobile-optimized. The site also handles private event bookings and gift card purchases.</p><p>Since launch, online reservations have increased by 67% and the site has been recognized by Awwwards for outstanding design and user experience.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj5/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "HomeVista Real Estate Portal",
+                    Slug = "homevista-real-estate-portal",
+                    Client = "HomeVista Properties",
+                    Category = "Web Platform",
+                    Technologies = "Angular, .NET Core, SQL Server, Azure Maps",
+                    Excerpt = "A comprehensive real estate platform with virtual tours, AI-powered property matching, and a complete agent management system.",
+                    Description = "<h2>Finding the Perfect Home</h2><p>HomeVista aggregates listings from hundreds of agencies and private sellers, providing a single platform for property seekers. The platform handles 500,000+ active listings with advanced search and filtering capabilities.</p><h3>AI Property Matching</h3><p>Our recommendation engine analyzes user preferences, search history, and behavior patterns to suggest properties that match criteria beyond basic filters. This feature increased engagement by 40% and reduced time-to-offer by 25%.</p><h2>Virtual Tour Integration</h2><p>360-degree virtual tours with embedded floor plans and neighborhood information allow buyers to explore properties remotely. Sellers reported 3x more qualified leads after implementing virtual tours.</p><p>HomeVista became the region's fastest-growing real estate platform, reaching 1 million monthly active users within one year.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj6/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "FitPulse Fitness Tracking App",
+                    Slug = "fitpulse-fitness-tracking-app",
+                    Client = "FitPulse Health Inc.",
+                    Category = "Mobile App",
+                    Technologies = "Flutter, Firebase, TensorFlow Lite, HealthKit",
+                    Excerpt = "A cross-platform fitness tracking app with AI-powered workout recognition, social challenges, and integration with wearable devices.",
+                    Description = "<h2>Your Personal Fitness Companion</h2><p>FitPulse combines activity tracking, workout planning, nutrition logging, and social motivation in a single beautiful app. The app uses on-device machine learning to automatically recognize exercises and count repetitions.</p><h3>AI Workout Recognition</h3><p>Using TensorFlow Lite, the app can identify over 80 different exercises from accelerometer and gyroscope data. Users simply start moving and FitPulse tracks everything automatically with 94% accuracy.</p><h2>Social Fitness Challenges</h2><p>Users can create or join challenges, compete on leaderboards, share achievements, and support friends. This social layer increased daily active usage by 55% and improved 30-day retention by 40%.</p><p>FitPulse achieved 500,000 downloads in the first quarter and was featured as a top health app on both iOS and Android app stores.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj7/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "GrowthHive Digital Marketing Campaign",
+                    Slug = "growthhive-digital-marketing-campaign",
+                    Client = "GrowthHive Agency",
+                    Category = "Marketing",
+                    Technologies = "Google Ads, Meta Ads, HubSpot, Tableau",
+                    Excerpt = "A data-driven multi-channel marketing campaign that generated 300% ROI across paid search, social media, and email marketing channels.",
+                    Description = "<h2>Data-Driven Marketing at Scale</h2><p>We designed and executed a comprehensive digital marketing campaign for GrowthHive's SaaS product launch. The campaign spanned Google Ads, LinkedIn, Meta, and email marketing, all coordinated through a unified analytics dashboard.</p><h3>Multi-Channel Attribution</h3><p>Using a custom attribution model, we tracked the customer journey across all touchpoints and optimized budget allocation in real-time. This approach reduced cost per lead by 45% while maintaining lead quality.</p><h2>Creative Strategy and A/B Testing</h2><p>We produced over 200 creative variations across formats and ran continuous A/B tests to identify winning combinations. Data-driven creative optimization improved click-through rates by 3.2x over the campaign average.</p><p>The campaign generated 8,500 qualified leads and $4.2M in attributed revenue over six months, achieving a 3.2x return on ad spend.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj8/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "ApexCorp Corporate Website Redesign",
+                    Slug = "apexcorp-corporate-website-redesign",
+                    Client = "ApexCorp Industries",
+                    Category = "Web Design",
+                    Technologies = "Next.js, Sanity CMS, Framer Motion, Vercel",
+                    Excerpt = "A complete corporate website redesign for a Fortune 500 industrial company, featuring a modular component system and sub-second page loads.",
+                    Description = "<h2>Modernizing a Corporate Giant</h2><p>ApexCorp's previous website was built on a legacy CMS that limited design flexibility and performance. We migrated the entire site to a modern JAMstack architecture, achieving perfect Lighthouse scores across all pages.</p><h3>Modular Component Library</h3><p>We built a reusable component library with over 50 modules that the marketing team can mix and match to create new pages without developer involvement. This reduced page creation time from weeks to hours.</p><h2>Performance and Accessibility</h2><p>The new site loads in under 800ms on mobile networks and achieves WCAG 2.1 AA compliance. Core Web Vitals scores rank in the 99th percentile, contributing to improved SEO performance and user satisfaction.</p><p>Organic traffic increased by 85% following the relaunch, and the site now serves as a template for ApexCorp's subsidiary brands worldwide.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj9/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "QuickBite Food Delivery App",
+                    Slug = "quickbite-food-delivery-app",
+                    Client = "QuickBite Technologies",
+                    Category = "Mobile App",
+                    Technologies = "Swift, Kotlin, Node.js, Socket.IO, MongoDB",
+                    Excerpt = "A real-time food delivery platform with live order tracking, smart routing, and an AI-powered recommendation engine for personalized meal suggestions.",
+                    Description = "<h2>Delivering Delight</h2><p>QuickBite connects hungry customers with local restaurants through a seamless ordering experience. The platform handles real-time order tracking, driver dispatch, and payment processing across thousands of concurrent orders.</p><h3>Smart Routing and Dispatch</h3><p>Our proprietary routing algorithm considers traffic patterns, restaurant preparation times, and driver locations to minimize delivery times. Average delivery time dropped by 22% compared to the previous system.</p><h2>Personalized Recommendations</h2><p>An AI recommendation engine analyzes order history, dietary preferences, and even weather conditions to suggest meals. This feature increased average order value by 18% and reduced decision paralysis.</p><p>QuickBite expanded to 15 cities within its first year, processing over 2 million orders with a customer satisfaction rating of 4.7 stars.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj10/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "Wanderlust Travel Booking Platform",
+                    Slug = "wanderlust-travel-booking-platform",
+                    Client = "Wanderlust Travel Co.",
+                    Category = "Web Platform",
+                    Technologies = "Vue.js, Go, GraphQL, Elasticsearch, Redis",
+                    Excerpt = "A modern travel booking platform with AI trip planning, price prediction, and a comprehensive loyalty program for frequent travelers.",
+                    Description = "<h2>Travel Made Intelligent</h2><p>Wanderlust aggregates flight, hotel, and activity data from hundreds of suppliers to offer the best travel combinations. The platform uses machine learning to predict price movements and recommend optimal booking times.</p><h3>AI Trip Planner</h3><p>Users describe their ideal trip in natural language, and the AI planner generates complete itineraries with flights, accommodations, activities, and dining recommendations. This feature increased booking conversion by 35%.</p><h2>Price Prediction Engine</h2><p>Our price prediction model analyzes historical data, seasonality, and market trends to forecast whether prices will rise or fall. Users receive timely notifications when prices drop or when they should book before increases.</p><p>Wanderlust achieved 1 million registered users in its first year and was named one of the top 10 travel startups by TechCrunch.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj11/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "MedConnect Healthcare Portal",
+                    Slug = "medconnect-healthcare-portal",
+                    Client = "MedConnect Health Systems",
+                    Category = "Web Platform",
+                    Technologies = "React, .NET, SQL Server, HL7 FHIR, Azure",
+                    Excerpt = "A secure patient portal with telemedicine capabilities, electronic health records access, prescription management, and AI-powered symptom checker.",
+                    Description = "<h2>Healthcare in Your Hands</h2><p>MedConnect gives patients secure access to their health information, telemedicine consultations, and direct communication with healthcare providers. The platform handles over 500,000 patient records with full HIPAA compliance.</p><h3>Telemedicine Integration</h3><p>Built-in video consultations with screen sharing, digital prescriptions, and integrated payment processing. Providers can see up to 30% more patients per day using MedConnect's streamlined workflow.</p><h2>AI Symptom Checker</h2><p>An AI-powered symptom assessment tool helps patients understand their condition and determine appropriate care levels. The system has a 92% accuracy rate for common conditions and routes urgent cases to emergency care immediately.</p><p>MedConnect was adopted by 25 hospital networks in its first year and reduced patient wait times for non-emergency consultations by 60%.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj12/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "SkillForge Educational Platform",
+                    Slug = "skillforge-educational-platform",
+                    Client = "SkillForge Learning Inc.",
+                    Category = "SaaS",
+                    Technologies = "Next.js, Python, PostgreSQL, AWS, WebRTC",
+                    Excerpt = "An interactive online learning platform with live classes, AI-powered progress tracking, and a marketplace for course creators.",
+                    Description = "<h2>Learning Without Limits</h2><p>SkillForge provides a complete ecosystem for online education, supporting live interactive classes, pre-recorded courses, and hands-on projects. The platform serves over 200,000 active learners across 50+ countries.</p><h3>AI-Powered Learning Paths</h3><p>Our adaptive learning engine analyzes student performance and learning styles to create personalized curriculum paths. Students following AI-recommended paths complete courses 40% faster with 25% higher assessment scores.</p><h2>Creator Marketplace</h2><p>Course creators can build, market, and sell courses with built-in tools for video hosting, assessment creation, and student analytics. Top creators earn over $100,000 annually on the platform.</p><p>SkillForge was recognized as the EdTech Startup of the Year and secured $30M in Series A funding within 18 months of launch.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj13/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "SocialPulse Social Media Dashboard",
+                    Slug = "socialpulse-social-media-dashboard",
+                    Client = "SocialPulse Inc.",
+                    Category = "SaaS",
+                    Technologies = "React, Redux, Django, Celery, PostgreSQL",
+                    Excerpt = "An enterprise social media management platform with scheduling, analytics, competitor tracking, and AI-powered content generation.",
+                    Description = "<h2>Social Media Management at Scale</h2><p>SocialPulse empowers marketing teams to manage multiple social media accounts from a single dashboard. The platform supports scheduling, publishing, engagement tracking, and comprehensive analytics across all major social networks.</p><h3>AI Content Generation</h3><p>Our AI assistant helps create on-brand social media content, from captions to image suggestions, based on brand voice guidelines and campaign objectives. Marketers report saving 15 hours per week using this feature.</p><h2>Competitor Intelligence</h2><p>Track competitor social media performance, content strategies, and audience growth. Benchmark reports provide actionable insights that help users refine their own social media strategy and stay ahead of market trends.</p><p>SocialPulse onboarded over 500 enterprise clients in its first year, including 20 Fortune 500 companies, and processes over 10 million social media posts monthly.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj14/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                },
+                new()
+                {
+                    Title = "MetaVault NFT Marketplace",
+                    Slug = "metavault-nft-marketplace",
+                    Client = "MetaVault Studios",
+                    Category = "Blockchain",
+                    Technologies = "Solidity, Web3.js, Next.js, IPFS, The Graph",
+                    Excerpt = "A full-featured NFT marketplace with multi-chain support, gas optimization, and a curated digital art collection from emerging artists.",
+                    Description = "<h2>The Future of Digital Art</h2><p>MetaVault is a curated NFT marketplace that connects digital artists with collectors. The platform supports Ethereum, Polygon, and Solana, with a focus on gas-efficient minting and eco-friendly transactions.</p><h3>Curated Artist Program</h3><p>Unlike open marketplaces, MetaVault features a rigorous curation process that ensures quality and authenticity. Emerging artists receive mentorship and promotional support, building a strong community of creators and collectors.</p><h2>Multi-Chain Interoperability</h2><p>Users can buy, sell, and trade NFTs across multiple blockchains from a single wallet interface. Our cross-chain bridge enables seamless asset transfers with minimal fees and near-instant confirmation times.</p><p>MetaVault generated over $5M in transaction volume in its first quarter and was featured in Forbes as one of the most innovative NFT platforms of the year.</p>",
+                    ImageUrl = "https://picsum.photos/seed/proj15/800/500",
+                    CompletedAt = DateTime.UtcNow.AddMonths(-rng.Next(1, 12)),
+                    IsPublished = true,
+                    Views = rng.Next(80, 3500)
+                }
+            };
+            _context.Projects.AddRange(allSeedProjects);
             await _context.SaveChangesAsync();
         }
 
@@ -358,7 +611,7 @@ public class HomeController : Controller
         var vm = new HomeViewModel
         {
             Services = await _context.Services.ToListAsync(),
-            Projects = await _context.Projects.ToListAsync(),
+            Projects = (await _context.Projects.Where(p => p.IsPublished).ToListAsync()).OrderBy(_ => Guid.NewGuid()).Take(3).ToList(),
             Testimonials = await _context.Testimonials.ToListAsync(),
             Faqs = await _context.FaqItems.Where(f => f.IsActive).OrderBy(f => f.Order).ToListAsync(),
             BlogPosts = (await _context.BlogPosts.Where(p => p.IsPublished).ToListAsync()).OrderBy(_ => Random.Shared.Next()).Take(3).ToList()

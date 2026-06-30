@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Holix.Controllers
 {
-    [Authorize]
     public class ServicesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,6 +24,14 @@ namespace Holix.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Services.ToListAsync());
+        }
+
+        public async Task<IActionResult> Detail(string slug)
+        {
+            if (string.IsNullOrEmpty(slug)) return NotFound();
+            var service = await _context.Services.FirstOrDefaultAsync(s => s.Slug == slug);
+            if (service == null) return NotFound();
+            return View(service);
         }
 
         // GET: Services/Details/5

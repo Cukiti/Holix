@@ -1,0 +1,353 @@
+@model IEnumerable<Holix.Models.Project>
+
+@{
+    ViewData["Title"] = "Portfolio";
+}
+
+<canvas id="portfolioBgCanvas"></canvas>
+
+<section class="blog-page-section">
+    <div class="container">
+        <div class="text-center mb-5" id="portfolioHeader">
+            <h1 class="fw-bold fs-1 mb-3" id="portfolioHeaderTitle">Our Portfolio</h1>
+            <div id="portfolioHeaderUnderline"></div>
+            <p class="text-secondary mx-auto" style="max-width: 600px;" id="portfolioHeaderSubtitle">
+                Discover our latest projects and case studies.
+            </p>
+        </div>
+
+        <div class="blog-search-wrap text-center mb-3">
+            <div class="blog-search-group">
+                <svg class="blog-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="portfolioSearchInput" class="blog-search-input" placeholder=" " autocomplete="off">
+                <label for="portfolioSearchInput" class="blog-search-label">Search projects...</label>
+                <button type="button" id="portfolioSearchClear" class="blog-search-clear" aria-label="Clear search">&times;</button>
+            </div>
+            <div id="portfolioSearchCounter" class="blog-search-counter">Showing @(Model != null ? Model.Count() : 0) of @(Model != null ? Model.Count() : 0) projects</div>
+        </div>
+
+        <div class="row g-4" id="portfolioGrid">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var project in Model)
+                {
+                    <div class="col-md-6 col-lg-4 d-flex portfolio-card-wrap" data-title="@project.Title.ToLower()" data-client="@project.Client.ToLower()" data-technologies="@project.Technologies.ToLower()" data-excerpt="@project.Excerpt.ToLower()" data-category="@project.Category?.ToLower()">
+                        <a asp-controller="Portfolio" asp-action="Details" asp-route-slug="@project.Slug" class="portfolio-card h-100 w-100 text-decoration-none" data-aos="fade-up" data-aos-delay="@(Model.ToList().IndexOf(project) * 100)">
+                            @if (!string.IsNullOrEmpty(project.ImageUrl))
+                            {
+                                <div class="portfolio-card-image">
+                                    <img src="@project.ImageUrl" alt="@project.Title">
+                                    <div class="portfolio-card-overlay"></div>
+                                </div>
+                            }
+                            <div class="portfolio-card-body d-flex flex-column">
+                                <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                                    <span class="portfolio-date text-secondary small">@project.CompletedAt.ToString("MMM yyyy")</span>
+                                </div>
+                                <h5 class="fw-bold mb-1 text-dark">@project.Title</h5>
+                                <span class="text-secondary small mb-2">@project.Client</span>
+                                @if (!string.IsNullOrEmpty(project.Excerpt))
+                                {
+                                    <p class="text-secondary small mb-3 flex-grow-1">@project.Excerpt</p>
+                                }
+                                @if (!string.IsNullOrEmpty(project.Technologies))
+                                {
+                                    <div class="mb-3 d-flex flex-wrap gap-1">
+                                        @foreach (var tech in project.Technologies.Split(','))
+                                        {
+                                            <span class="portfolio-tech-tag">@tech.Trim()</span>
+                                        }
+                                    </div>
+                                }
+                                <div class="mt-auto">
+                                    <span class="btn btn-outline-primary rounded-pill px-4 btn-premium w-100 d-inline-flex align-items-center justify-content-center">
+                                        View Project <i class="fa-solid fa-arrow-right ms-2"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center py-5">
+                    <p class="text-secondary">No projects published yet. Check back soon!</p>
+                </div>
+            }
+        </div>
+
+        <div id="portfolioNoResults" class="text-center py-5" style="display:none;">
+            <p class="text-secondary fs-5">No projects found for your search</p>
+        </div>
+    </div>
+</section>
+
+@functions {
+    string FormatViews(int views)
+    {
+        if (views >= 1000)
+            return (views / 1000.0).ToString("0.#") + "k";
+        return views.ToString();
+    }
+}
+
+@section Scripts {
+    <script>
+        (function() {
+            function wrapWords(root) {
+                var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                var nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+                nodes.forEach(function(node) {
+                    var text = node.textContent;
+                    var parts = text.split(/(\s+)/);
+                    if (parts.length < 2) return;
+                    var frag = document.createDocumentFragment();
+                    for (var i = 0; i < parts.length; i++) {
+                        if (parts[i].trim() === '') {
+                            frag.appendChild(document.createTextNode(parts[i]));
+                        } else {
+                            var span = document.createElement('span');
+                            span.className = 'hover-word';
+                            span.textContent = parts[i];
+                            frag.appendChild(span);
+                        }
+                    }
+                    node.parentNode.replaceChild(frag, node);
+                });
+            }
+            var targets = document.querySelectorAll('h1, h2, h3, h4, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+            targets.forEach(function(el) {
+                if (!el || el.closest('.hover-word') || el.querySelector('.hover-word')) return;
+                wrapWords(el);
+            });
+        })();
+
+        (function() {
+            var input = document.getElementById('portfolioSearchInput');
+            var grid = document.getElementById('portfolioGrid');
+            var clearBtn = document.getElementById('portfolioSearchClear');
+            var noResults = document.getElementById('portfolioNoResults');
+            var counter = document.getElementById('portfolioSearchCounter');
+            var cards = [];
+            var originalOrder = [];
+            var filterTimeout = null;
+
+            if (!input || !grid) return;
+            cards = [].slice.call(grid.querySelectorAll('.portfolio-card-wrap'));
+            originalOrder = cards.slice();
+
+            function updateCounter(count, total) {
+                if (!counter) return;
+                counter.classList.remove('blog-search-counter-update');
+                void counter.offsetWidth;
+                counter.textContent = 'Showing ' + count + ' of ' + total + ' projects';
+                counter.classList.add('blog-search-counter-update');
+            }
+            function matchesText(card, q) {
+                if (!q) return true;
+                var title = (card.getAttribute('data-title') || '').toLowerCase();
+                var client = (card.getAttribute('data-client') || '').toLowerCase();
+                var technologies = (card.getAttribute('data-technologies') || '').toLowerCase();
+                var excerpt = (card.getAttribute('data-excerpt') || '').toLowerCase();
+                var cat = (card.getAttribute('data-category') || '').toLowerCase();
+                return title.indexOf(q) !== -1 || client.indexOf(q) !== -1 || technologies.indexOf(q) !== -1 || excerpt.indexOf(q) !== -1 || cat.indexOf(q) !== -1;
+            }
+            function filter() {
+                var q = input.value.trim().toLowerCase();
+                cards.forEach(function(c) { c.classList.add('card-exit'); });
+                setTimeout(function() {
+                    var matches = [];
+                    var nonMatches = [];
+                    cards.forEach(function(card) {
+                        var match = matchesText(card, q);
+                        if (match) matches.push(card);
+                        else nonMatches.push(card);
+                    });
+                    if (q === '') {
+                        originalOrder.forEach(function(card) { grid.appendChild(card); });
+                    } else {
+                        matches.forEach(function(card) { grid.appendChild(card); });
+                        nonMatches.forEach(function(card) { grid.appendChild(card); });
+                    }
+                    cards.forEach(function(c, i) {
+                        c.classList.remove('card-exit');
+                        var match = matchesText(c, q);
+                        if (match) {
+                            c.classList.remove('card-dimmed');
+                            c.style.pointerEvents = '';
+                            c.classList.add('card-enter');
+                            c.style.animationDelay = (i * 60) + 'ms';
+                        } else {
+                            c.classList.remove('card-enter');
+                            c.classList.add('card-dimmed');
+                            c.style.pointerEvents = 'none';
+                        }
+                    });
+                    if (matches.length === 1) {
+                        setTimeout(function() {
+                            matches[0].classList.add('card-bounce');
+                            setTimeout(function() { matches[0].classList.remove('card-bounce'); }, 500);
+                        }, 60 * cards.length + 400);
+                    }
+                    setTimeout(function() {
+                        cards.forEach(function(c) {
+                            c.classList.remove('card-enter');
+                            c.style.animationDelay = '';
+                        });
+                    }, 60 * cards.length + 400);
+                    if (noResults) { noResults.style.display = matches.length === 0 ? 'block' : 'none'; }
+                    clearBtn.style.display = q !== '' ? 'flex' : 'none';
+                    updateCounter(matches.length, cards.length);
+                }, 150);
+            }
+            input.addEventListener('input', function() {
+                if (filterTimeout) clearTimeout(filterTimeout);
+                filterTimeout = setTimeout(filter, 50);
+            });
+            if (clearBtn) {
+                clearBtn.addEventListener('click', function() {
+                    input.value = '';
+                    filter();
+                    input.focus();
+                });
+            }
+            filter();
+        })();
+
+        (function() {
+            var title = document.getElementById('portfolioHeaderTitle');
+            var subtitle = document.getElementById('portfolioHeaderSubtitle');
+            var underline = document.getElementById('portfolioHeaderUnderline');
+            if (!title) return;
+
+            (function() {
+                function wrapWords(root) {
+                    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                    var nodes = [];
+                    while (walker.nextNode()) nodes.push(walker.currentNode);
+                    nodes.forEach(function(node) {
+                        var text = node.textContent;
+                        var parts = text.split(/(\s+)/);
+                        if (parts.length < 2) return;
+                        var frag = document.createDocumentFragment();
+                        for (var i = 0; i < parts.length; i++) {
+                            if (parts[i].trim() === '') { frag.appendChild(document.createTextNode(parts[i])); }
+                            else { var span = document.createElement('span'); span.className = 'hover-word'; span.textContent = parts[i]; frag.appendChild(span); }
+                        }
+                        node.parentNode.replaceChild(frag, node);
+                    });
+                }
+                var header = document.getElementById('portfolioHeader');
+                if (header) {
+                    var hTargets = header.querySelectorAll('h1, h2, h3, h4, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+                    hTargets.forEach(function(el) {
+                        if (!el || el.closest('.hover-word') || el.querySelector('.hover-word')) return;
+                        wrapWords(el);
+                    });
+                }
+            })();
+
+            var h1 = document.getElementById('portfolioHeaderTitle');
+            if (!h1) return;
+            var text = h1.textContent.replace(/\s+/g, ' ').trim();
+            h1.textContent = '';
+            var allLetters = [];
+            for (var i = 0; i < text.length; i++) {
+                var ch = text[i];
+                if (ch === ' ') {
+                    var sp = document.createElement('span');
+                    sp.className = 'letter-span';
+                    sp.innerHTML = '&nbsp;';
+                    h1.appendChild(sp);
+                    allLetters.push(sp);
+                } else {
+                    var span = document.createElement('span');
+                    span.className = 'letter-span';
+                    span.textContent = ch;
+                    h1.appendChild(span);
+                    allLetters.push(span);
+                }
+            }
+            var totalTime = allLetters.length * 40;
+            allLetters.forEach(function(span, idx) {
+                setTimeout(function() { span.classList.add('visible'); }, idx * 40);
+            });
+
+            if (subtitle) {
+                var subText = subtitle.textContent.replace(/\s+/g, ' ').trim();
+                var subWords = subText.split(/\s+/);
+                subtitle.textContent = '';
+                subWords.forEach(function(word, idx) {
+                    var span = document.createElement('span');
+                    span.className = 'hover-word blog-header-sub-word';
+                    span.textContent = word;
+                    span.style.opacity = '0';
+                    span.style.transform = 'translateY(10px)';
+                    span.style.transition = 'opacity 0.4s cubic-bezier(0.23,1,0.32,1), transform 0.4s cubic-bezier(0.23,1,0.32,1)';
+                    span.style.transitionDelay = (totalTime + 500 + idx * 50) + 'ms';
+                    subtitle.appendChild(span);
+                    if (idx < subWords.length - 1) subtitle.appendChild(document.createTextNode(' '));
+                });
+                setTimeout(function() {
+                    subtitle.querySelectorAll('.blog-header-sub-word').forEach(function(w) {
+                        w.style.opacity = '1';
+                        w.style.transform = 'translateY(0)';
+                    });
+                }, 100);
+            }
+
+            if (underline) {
+                setTimeout(function() {
+                    underline.classList.add('visible');
+                    underline.style.transition = 'width 0.8s cubic-bezier(0.23,1,0.32,1), opacity 0.3s ease';
+                }, totalTime + 200);
+            }
+        })();
+
+        (function() {
+            var canvas = document.getElementById('portfolioBgCanvas');
+            if (!canvas) return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { canvas.style.display = 'none'; return; }
+            var ctx = canvas.getContext('2d');
+            var w, h, lines = [];
+            function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+            window.addEventListener('resize', resize);
+            resize();
+            function createLine() {
+                return {
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    len: 80 + Math.random() * 120,
+                    speed: 0.3 + Math.random() * 0.5,
+                    opacity: 0.03 + Math.random() * 0.04,
+                    direction: Math.random() > 0.5 ? 1 : -1
+                };
+            }
+            for (var i = 0; i < 12; i++) lines.push(createLine());
+            function update() {
+                for (var i = 0; i < lines.length; i++) {
+                    var l = lines[i];
+                    l.x += l.speed * l.direction;
+                    if (l.x > w + l.len) { l.x = -l.len; l.y = Math.random() * h; }
+                    if (l.x < -l.len) { l.x = w + l.len; l.y = Math.random() * h; }
+                }
+            }
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                for (var i = 0; i < lines.length; i++) {
+                    var l = lines[i];
+                    ctx.strokeStyle = 'rgba(34, 197, 94, ' + l.opacity + ')';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(l.x, l.y);
+                    ctx.lineTo(l.x + l.len * l.direction, l.y);
+                    ctx.stroke();
+                }
+            }
+            function loop() { update(); draw(); requestAnimationFrame(loop); }
+            loop();
+        })();
+    </script>
+}

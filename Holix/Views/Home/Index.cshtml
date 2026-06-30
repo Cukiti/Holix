@@ -5,32 +5,40 @@
 }
 
 <!-- Hero Section -->
-<section id="home" class="d-flex align-items-center" style="min-height: 100vh; padding-top: 100px; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);">
+<section id="home" class="d-flex align-items-center sweep-section" style="min-height: 100vh; padding-top: 100px; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); position: relative; overflow: hidden;">
+    <canvas id="heroSweepCanvas" class="section-sweep-canvas"></canvas>
     <div class="container">
         <div class="row align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0">
-                <span class="text-primary fw-bold mb-3 d-block"><i class="fa-solid fa-minus me-2"></i>Welcome to Our Agency</span>
-                <h1 class="hero-heading mb-4">Smart Ideas for your<br>Brand are Here</h1>
-                <p class="lead text-secondary mb-5 pe-lg-5">
+            <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+                <span class="text-primary fw-bold mb-3 d-block hero-float-label" id="heroSubtitle"><i class="fa-solid fa-minus me-2"></i>Welcome to Our Agency</span>
+                <h1 class="hero-heading mb-4 hero-float-title" id="heroTitle">Smart Ideas for your<br>Brand are Here</h1>
+                <p class="lead text-secondary mb-5 pe-lg-5 hero-float-desc" id="heroDesc">
                     Transformamos tu visión en experiencias digitales excepcionales. En Holix, combinamos diseño UX/UI de vanguardia, desarrollo robusto y marketing estratégico para impulsar el éxito de tu negocio en el mundo digital.
                 </p>
                 <div class="d-flex align-items-center flex-wrap">
-                    <a href="#services" class="btn btn-primary me-4 mb-2">DISCOVER MORE</a>
+                    <a href="#services" class="btn btn-primary me-4 mb-2 hero-btn-pulse">DISCOVER MORE</a>
                     <a href="#" class="d-flex align-items-center text-dark text-decoration-none fw-bold mb-2">
                         <span class="btn-play me-3"><i class="fa-solid fa-play ms-1"></i></span>
                         How it works
                     </a>
                 </div>
+                <div class="hero-shape" style="width:12px;height:12px;border-radius:50%;background:#22c55e;top:15%;left:5%;"></div>
+                <div class="hero-shape" style="width:8px;height:8px;border-radius:50%;background:#22c55e;top:50%;left:2%;"></div>
+                <div class="hero-shape" style="width:10px;height:10px;border-radius:50%;background:#22c55e;top:25%;right:10%;"></div>
+                <div class="hero-shape" style="width:6px;height:6px;border-radius:50%;background:#22c55e;top:65%;right:5%;"></div>
+                <div class="hero-shape" style="width:14px;height:2px;border-radius:2px;background:#22c55e;top:35%;left:10%;transform:rotate(45deg);"></div>
+                <div class="hero-shape" style="width:10px;height:2px;border-radius:2px;background:#22c55e;top:75%;right:15%;transform:rotate(-30deg);"></div>
             </div>
             <div class="col-lg-6 position-relative">
-                <div class="hero-circle mx-auto"></div>
+                <div class="hero-circle mx-auto hero-circle-pulse"></div>
             </div>
         </div>
     </div>
 </section>
 
 <!-- About Section -->
-<section id="about" class="py-5 my-5">
+<section id="about" class="py-5 my-5 sweep-section" style="position: relative; overflow: hidden;">
+    <canvas id="aboutSweepCanvas" class="section-sweep-canvas"></canvas>
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-5 mb-lg-0 pe-lg-5" data-aos="fade-right">
@@ -48,28 +56,28 @@
                 </div>
             </div>
             <div class="col-lg-6 ps-lg-5" data-aos="fade-left">
-                <h2 class="fw-bold fs-1 mb-4 about-title">Creamos soluciones digitales diseñadas para tu éxito.</h2>
+                <h2 class="fw-bold fs-1 mb-4 about-title" id="aboutTitle">We create digital solutions designed for your success.</h2>
                 <p class="text-secondary mb-4">
-                    Nos apasiona la innovación y la excelencia. Nuestro equipo multidisciplinario trabaja mano a mano contigo para construir productos digitales que no solo lucen increíbles, sino que ofrecen resultados medibles y un alto retorno de inversión.
+                    We're passionate about innovation and excellence. Our multidisciplinary team works hand in hand with you to build digital products that not only look amazing, but deliver measurable results and a strong return on investment.
                 </p>
                 <ul class="list-unstyled mb-5">
                     <li class="mb-3 d-flex align-items-center" data-aos="fade-up" data-aos-delay="0">
                         <i class="fa-solid fa-check text-primary me-3 fs-6"></i>
-                        <span class="text-secondary fw-medium">Estrategias personalizadas para tu marca</span>
+                        <span class="text-secondary fw-medium">Customized strategies for your brand</span>
                     </li>
                     <li class="mb-3 d-flex align-items-center" data-aos="fade-up" data-aos-delay="100">
                         <i class="fa-solid fa-check text-primary me-3 fs-6"></i>
-                        <span class="text-secondary fw-medium">Soporte técnico y mantenimiento continuo</span>
+                        <span class="text-secondary fw-medium">Ongoing technical support and maintenance</span>
                     </li>
                     <li class="mb-3 d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">
                         <i class="fa-solid fa-check text-primary me-3 fs-6"></i>
-                        <span class="text-secondary fw-medium">Enfoque centrado en la conversión y el ROI</span>
+                        <span class="text-secondary fw-medium">Conversion and ROI-focused approach</span>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center flex-wrap">
-                    <a href="#about" class="btn btn-primary px-4 py-2 me-4 mb-2">KNOW MORE</a>
+                    <a href="#services" class="btn btn-primary px-4 py-2 me-4 mb-2">KNOW MORE</a>
                     <div class="d-flex align-items-center mb-2">
-                        <div class="text-primary fs-2 me-2"><i class="fa-solid fa-trophy"></i></div>
+                        <div class="trophy-icon-wrap text-primary fs-2 me-2"><i class="fa-solid fa-trophy"></i></div>
                         <span class="fw-bold text-primary fs-5"><span class="count-up" data-target="10">0</span>+ Years Experience</span>
                     </div>
                 </div>
@@ -82,9 +90,9 @@
 <section id="services" class="py-5" style="background-color: #fafafa;">
     <div class="container py-5">
         <div class="text-center mb-5">
-            <span class="text-primary fw-bold mb-2 d-block">-What We Offer-</span>
-            <h2 class="fw-bold fs-1 mb-3">Our Creative Services</h2>
-            <p class="text-secondary mx-auto" style="max-width: 500px;">
+            <span class="text-primary fw-bold mb-2 d-block" id="servicesSubtitle">-What We Offer-</span>
+            <h2 class="fw-bold fs-1 mb-3" id="servicesTitle">Our Creative Services</h2>
+            <p class="text-secondary mx-auto" style="max-width: 500px;" id="servicesDesc">
                 Get the most of reduction in your team's operating costs for the whole product which creates amazing UI/UX experiences.
             </p>
         </div>
@@ -100,7 +108,7 @@
                             <div>
                                 <h5 class="fw-bold mb-3">@service.Title</h5>
                                 <p class="text-secondary small mb-4">@service.Description</p>
-                                <a href="#" class="text-dark fw-bold text-decoration-none small">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                                <a asp-controller="Services" asp-action="Detail" asp-route-slug="@service.Slug" class="text-dark fw-bold text-decoration-none small">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
                             </div>
                         </div>
                     </div>
@@ -112,7 +120,7 @@
                         <div>
                             <h5 class="fw-bold mb-3">UI/UX Creative Design</h5>
                             <p class="text-secondary small mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing semper turpis. Nullam eget luctte gula and adipiscing elit.</p>
-                            <a href="#" class="text-dark fw-bold text-decoration-none small">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                            <a asp-controller="Services" asp-action="Detail" asp-route-slug="ui-ux-creative-design" class="text-dark fw-bold text-decoration-none small">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
                         </div>
                     </div>
                 </div>
@@ -122,7 +130,7 @@
                         <div>
                             <h5 class="fw-bold mb-3">App Development</h5>
                             <p class="text-secondary small mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing semper turpis. Nullam eget luctte gula and adipiscing elit.</p>
-                            <a href="#" class="text-dark fw-bold text-decoration-none small">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                            <a asp-controller="Services" asp-action="Detail" asp-route-slug="app-development" class="text-dark fw-bold text-decoration-none small">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
                         </div>
                     </div>
                 </div>
@@ -132,7 +140,7 @@
                         <div>
                             <h5 class="fw-bold mb-3">Professional Content Writer</h5>
                             <p class="text-secondary small mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing semper turpis. Nullam eget luctte gula and adipiscing elit.</p>
-                            <a href="#" class="text-dark fw-bold text-decoration-none small">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                            <a asp-controller="Services" asp-action="Detail" asp-route-slug="professional-content-writer" class="text-dark fw-bold text-decoration-none small">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
                         </div>
                     </div>
                 </div>
@@ -142,14 +150,14 @@
                         <div>
                             <h5 class="fw-bold mb-3">Graphic Design</h5>
                             <p class="text-secondary small mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing semper turpis. Nullam eget luctte gula and adipiscing elit.</p>
-                            <a href="#" class="text-dark fw-bold text-decoration-none small">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                            <a asp-controller="Services" asp-action="Detail" asp-route-slug="graphic-design" class="text-dark fw-bold text-decoration-none small">Read More <i class="fa-solid fa-arrow-right ms-1"></i></a>
                         </div>
                     </div>
                 </div>
             }
         </div>
         <div class="text-center mt-5">
-            <a href="#" class="btn btn-primary px-4 py-2">GET STARTED</a>
+            <a href="#contact" class="btn btn-primary px-4 py-2">GET STARTED</a>
         </div>
     </div>
 </section>
@@ -167,12 +175,12 @@
         <div class="row g-4 justify-content-center">
             @{
                 var features = new[] {
-                    new { Num = "01", Title = "Diseño de Vanguardia", Desc = "Interfaces intuitivas y estéticas que atrapan al usuario desde el primer segundo." },
-                    new { Num = "02", Title = "Soporte Continuo", Desc = "Asistencia técnica 24/7 y mantenimiento para que tu sistema nunca se detenga." },
-                    new { Num = "03", Title = "Estrategia de Clientes", Desc = "Planes de marketing digital enfocados en conversión y fidelización de tu audiencia." },
-                    new { Num = "04", Title = "Desarrollo Escalable", Desc = "Arquitectura robusta que crece junto con tu negocio sin comprometer el rendimiento." },
-                    new { Num = "05", Title = "Tecnología Avanzada", Desc = "Utilizamos los frameworks más modernos para garantizar velocidad y seguridad." },
-                    new { Num = "06", Title = "Precios Competitivos", Desc = "Soluciones de nivel empresarial al mejor valor, maximizando tu presupuesto." }
+                    new { Num = "01", Title = "Cutting-Edge Design", Desc = "Intuitive, beautiful interfaces that capture users from the first second." },
+                    new { Num = "02", Title = "Ongoing Support", Desc = "24/7 technical assistance and maintenance so your system never stops running." },
+                    new { Num = "03", Title = "Client Strategy", Desc = "Digital marketing plans focused on conversion and audience loyalty." },
+                    new { Num = "04", Title = "Scalable Development", Desc = "Robust architecture that grows with your business without compromising performance." },
+                    new { Num = "05", Title = "Advanced Technology", Desc = "We use the most modern frameworks to guarantee speed and security." },
+                    new { Num = "06", Title = "Competitive Pricing", Desc = "Enterprise-level solutions at the best value, maximizing your budget." }
                 };
             }
             @foreach(var item in features)
@@ -193,6 +201,31 @@
 
 @section Scripts {
     <script>
+        /* ── Global Word-Wrap (catch every text element on the page) ── */
+        (function() {
+            function wrapWords(root) {
+                var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                var nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+                nodes.forEach(function(node) {
+                    var text = node.textContent;
+                    var parts = text.split(/(\s+)/);
+                    if (parts.length < 2) return;
+                    var frag = document.createDocumentFragment();
+                    for (var i = 0; i < parts.length; i++) {
+                        if (parts[i].trim() === '') { frag.appendChild(document.createTextNode(parts[i])); }
+                        else { var span = document.createElement('span'); span.className = 'hover-word'; span.textContent = parts[i]; frag.appendChild(span); }
+                    }
+                    node.parentNode.replaceChild(frag, node);
+                });
+            }
+            var targets = document.querySelectorAll('h1, h2, h3, h4, h5, p, span:not(.icon):not(.letter-span):not(.hover-word), li, a:not(.btn):not(.nav-link), label, small, strong, em, blockquote, figcaption');
+            targets.forEach(function(el) {
+                if (!el || el.closest('.hover-word') || el.querySelector('.hover-word') || el.closest('.letter-span') || el.querySelector('.letter-span')) return;
+                wrapWords(el);
+            });
+        })();
+
         (function() {
             const counters = document.querySelectorAll('.count-up');
             if (!counters.length) return;
@@ -219,6 +252,67 @@
             }, { threshold: 0.5 });
             counters.forEach(function(c) { observer.observe(c); });
         })();
+
+        function createSweepCanvas(canvasId) {
+            var canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { canvas.style.display = 'none'; return; }
+            var ctx = canvas.getContext('2d');
+            var w, h, lines = [];
+            var MIN = 8, MAX = 14;
+            function resize() {
+                var rect = canvas.parentElement.getBoundingClientRect();
+                w = canvas.width = rect.width;
+                h = canvas.height = rect.height;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+            function create() {
+                var fromLeft = Math.random() < 0.5;
+                var len = w * (0.35 + Math.random() * 0.4);
+                return {
+                    cx: fromLeft ? -len : w + len,
+                    y: Math.random() * h,
+                    len: len,
+                    thick: 1.5 + Math.random() * 3,
+                    dir: fromLeft ? 1 : -1,
+                    speed: 2.5 + Math.random() * 3
+                };
+            }
+            for (var i = 0; i < MIN + Math.floor(Math.random() * (MAX - MIN + 1)); i++) lines.push(create());
+            function update() {
+                for (var i = lines.length - 1; i >= 0; i--) {
+                    var l = lines[i];
+                    l.cx += l.speed * l.dir;
+                    if ((l.dir > 0 && l.cx - l.len / 2 > w) || (l.dir < 0 && l.cx + l.len / 2 < 0)) { lines.splice(i, 1); }
+                }
+                while (lines.length < MIN + Math.floor(Math.random() * (MAX - MIN + 1))) { lines.push(create()); }
+            }
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                for (var i = 0; i < lines.length; i++) {
+                    var l = lines[i];
+                    var relPos = l.dir > 0 ? l.cx / w : (w - l.cx) / w;
+                    var opacity = 0;
+                    if (relPos < 0.25) opacity = Math.max(0, relPos / 0.25);
+                    else if (relPos > 0.75) opacity = Math.max(0, (1 - relPos) / 0.25);
+                    else opacity = 1;
+                    ctx.globalAlpha = opacity * 0.3;
+                    ctx.strokeStyle = 'rgb(34, 197, 94)';
+                    ctx.lineWidth = l.thick;
+                    ctx.beginPath();
+                    ctx.moveTo(l.cx - l.len / 2, l.y);
+                    ctx.lineTo(l.cx + l.len / 2, l.y);
+                    ctx.stroke();
+                }
+                ctx.globalAlpha = 1;
+            }
+            function loop() { update(); draw(); requestAnimationFrame(loop); }
+            loop();
+        }
+        createSweepCanvas('heroSweepCanvas');
+        createSweepCanvas('aboutSweepCanvas');
+        createSweepCanvas('testimonialsSweepCanvas');
 
         /* ── Contact Sweep Canvas ── */
         (function() {
@@ -495,6 +589,413 @@
                 });
             })();
         })();
+
+        /* ── Hero Section Animations ── */
+        (function() {
+            var hero = document.getElementById('home');
+            if (!hero) return;
+
+            /* Letter cascade on hero title */
+            var heroTitle = document.getElementById('heroTitle');
+            if (heroTitle && !heroTitle.classList.contains('letter-cascaded')) {
+                heroTitle.classList.add('letter-cascaded');
+                var text = heroTitle.textContent.replace(/\n/g, ' ');
+                heroTitle.innerHTML = '';
+                for (var i = 0; i < text.length; i++) {
+                    var ch = text[i];
+                    if (ch === ' ') {
+                        var sp = document.createElement('span');
+                        sp.className = 'letter-span';
+                        sp.innerHTML = '&nbsp;';
+                        heroTitle.appendChild(sp);
+                    } else {
+                        var span = document.createElement('span');
+                        span.className = 'letter-span';
+                        span.textContent = ch;
+                        heroTitle.appendChild(span);
+                    }
+                }
+                var letters = heroTitle.querySelectorAll('.letter-span');
+                var hObs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            letters.forEach(function(span, idx) { setTimeout(function() { span.classList.add('visible'); }, idx * 40); });
+                            hObs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                hObs.observe(heroTitle);
+            }
+
+            /* Subtitle word fade-up */
+            var heroSub = document.getElementById('heroSubtitle');
+            if (heroSub && !heroSub.classList.contains('word-cascaded')) {
+                heroSub.classList.add('word-cascaded');
+                var subText = heroSub.textContent;
+                var subWords = subText.split(/\s+/);
+                heroSub.textContent = '';
+                subWords.forEach(function(word, idx) {
+                    var span = document.createElement('span');
+                    span.className = 'subtitle-word';
+                    span.textContent = word;
+                    span.style.transitionDelay = (200 + idx * 50) + 'ms';
+                    heroSub.appendChild(span);
+                    if (idx < subWords.length - 1) heroSub.appendChild(document.createTextNode(' '));
+                });
+                var subObs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.querySelectorAll('.subtitle-word').forEach(function(w) { w.classList.add('visible'); });
+                            subObs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                subObs.observe(heroSub);
+            }
+
+            /* Word-wrap all text in hero */
+            (function() {
+                function wrapWords(root) {
+                    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                    var nodes = [];
+                    while (walker.nextNode()) nodes.push(walker.currentNode);
+                    nodes.forEach(function(node) {
+                        var text = node.textContent;
+                        var parts = text.split(/(\s+)/);
+                        if (parts.length < 2) return;
+                        var frag = document.createDocumentFragment();
+                        for (var i = 0; i < parts.length; i++) {
+                            if (parts[i].trim() === '') { frag.appendChild(document.createTextNode(parts[i])); }
+                            else { var span = document.createElement('span'); span.className = 'hover-word'; span.textContent = parts[i]; frag.appendChild(span); }
+                        }
+                        node.parentNode.replaceChild(frag, node);
+                    });
+                }
+                var targets = hero.querySelectorAll('h1, h2, h3, h4, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+                targets.forEach(function(el) {
+                    if (!el || el.closest('.hover-word') || el.classList.contains('hero-heading') || el.id === 'heroTitle' || el.id === 'heroSubtitle' || el.querySelector('.hover-word') || el.querySelector('.letter-span')) return;
+                    wrapWords(el);
+                });
+            })();
+        })();
+
+        /* ── About Section Animations ── */
+        (function() {
+            var about = document.getElementById('about');
+            if (!about) return;
+
+            /* Letter cascade */
+            var title = document.getElementById('aboutTitle');
+            if (title && !title.classList.contains('letter-cascaded')) {
+                title.classList.add('letter-cascaded');
+                var text = title.textContent;
+                title.textContent = '';
+                for (var i = 0; i < text.length; i++) {
+                    var ch = text[i];
+                    if (ch === ' ') { var sp = document.createElement('span'); sp.className = 'letter-span'; sp.innerHTML = '&nbsp;'; title.appendChild(sp); }
+                    else { var span = document.createElement('span'); span.className = 'letter-span'; span.textContent = ch; title.appendChild(span); }
+                }
+                var letters = title.querySelectorAll('.letter-span');
+                var obs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            letters.forEach(function(span, idx) { setTimeout(function() { span.classList.add('visible'); }, idx * 40); });
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                obs.observe(title);
+            }
+
+            /* Word-wrap */
+            (function() {
+                function wrapWords(root) {
+                    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                    var nodes = [];
+                    while (walker.nextNode()) nodes.push(walker.currentNode);
+                    nodes.forEach(function(node) {
+                        var text = node.textContent;
+                        var parts = text.split(/(\s+)/);
+                        if (parts.length < 2) return;
+                        var frag = document.createDocumentFragment();
+                        for (var i = 0; i < parts.length; i++) {
+                            if (parts[i].trim() === '') { frag.appendChild(document.createTextNode(parts[i])); }
+                            else { var span = document.createElement('span'); span.className = 'hover-word'; span.textContent = parts[i]; frag.appendChild(span); }
+                        }
+                        node.parentNode.replaceChild(frag, node);
+                    });
+                }
+                var targets = about.querySelectorAll('h1, h2, h3, h4, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+                targets.forEach(function(el) {
+                    if (!el || el.closest('.hover-word') || el.classList.contains('about-title') || el.id === 'aboutTitle' || el.querySelector('.hover-word') || el.querySelector('.letter-span')) return;
+                    wrapWords(el);
+                });
+            })();
+        })();
+
+        /* ── Services Section Animations ── */
+        (function() {
+            var services = document.getElementById('services');
+            if (!services) return;
+
+            var title = document.getElementById('servicesTitle');
+            if (title && !title.classList.contains('letter-cascaded')) {
+                title.classList.add('letter-cascaded');
+                var text = title.textContent;
+                title.textContent = '';
+                for (var i = 0; i < text.length; i++) {
+                    var ch = text[i];
+                    if (ch === ' ') { var sp = document.createElement('span'); sp.className = 'letter-span'; sp.innerHTML = '&nbsp;'; title.appendChild(sp); }
+                    else { var span = document.createElement('span'); span.className = 'letter-span'; span.textContent = ch; title.appendChild(span); }
+                }
+                var letters = title.querySelectorAll('.letter-span');
+                var obs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            letters.forEach(function(span, idx) { setTimeout(function() { span.classList.add('visible'); }, idx * 40); });
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                obs.observe(title);
+            }
+
+            var sub = document.getElementById('servicesSubtitle');
+            if (sub && !sub.classList.contains('word-cascaded')) {
+                sub.classList.add('word-cascaded');
+                var subText = sub.textContent;
+                var subWords = subText.split(/\s+/);
+                sub.textContent = '';
+                subWords.forEach(function(word, idx) {
+                    var span = document.createElement('span');
+                    span.className = 'subtitle-word';
+                    span.textContent = word;
+                    span.style.transitionDelay = (200 + idx * 50) + 'ms';
+                    sub.appendChild(span);
+                    if (idx < subWords.length - 1) sub.appendChild(document.createTextNode(' '));
+                });
+                var subObs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.querySelectorAll('.subtitle-word').forEach(function(w) { w.classList.add('visible'); });
+                            subObs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                subObs.observe(sub);
+            }
+
+            (function() {
+                function wrapWords(root) {
+                    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                    var nodes = [];
+                    while (walker.nextNode()) nodes.push(walker.currentNode);
+                    nodes.forEach(function(node) {
+                        var text = node.textContent;
+                        var parts = text.split(/(\s+)/);
+                        if (parts.length < 2) return;
+                        var frag = document.createDocumentFragment();
+                        for (var i = 0; i < parts.length; i++) {
+                            if (parts[i].trim() === '') { frag.appendChild(document.createTextNode(parts[i])); }
+                            else { var span = document.createElement('span'); span.className = 'hover-word'; span.textContent = parts[i]; frag.appendChild(span); }
+                        }
+                        node.parentNode.replaceChild(frag, node);
+                    });
+                }
+                var targets = services.querySelectorAll('h1, h2, h3, h4, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+                targets.forEach(function(el) {
+                    if (!el || el.closest('.hover-word') || el.querySelector('.hover-word') || el.querySelector('.letter-span')) return;
+                    wrapWords(el);
+                });
+            })();
+        })();
+
+        /* ── Testimonials Section Animations ── */
+        (function() {
+            var testimonials = document.getElementById('testimonials');
+            if (!testimonials) return;
+
+            var title = document.getElementById('testimonialsTitle');
+            if (title && !title.classList.contains('letter-cascaded')) {
+                title.classList.add('letter-cascaded');
+                var text = title.textContent;
+                title.textContent = '';
+                for (var i = 0; i < text.length; i++) {
+                    var ch = text[i];
+                    if (ch === ' ') { var sp = document.createElement('span'); sp.className = 'letter-span'; sp.innerHTML = '&nbsp;'; title.appendChild(sp); }
+                    else { var span = document.createElement('span'); span.className = 'letter-span'; span.textContent = ch; title.appendChild(span); }
+                }
+                var letters = title.querySelectorAll('.letter-span');
+                var obs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            letters.forEach(function(span, idx) { setTimeout(function() { span.classList.add('visible'); }, 300 + idx * 40); });
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                obs.observe(title);
+            }
+
+            var sub = document.getElementById('testimonialsSubtitle');
+            if (sub && !sub.classList.contains('word-cascaded')) {
+                sub.classList.add('word-cascaded');
+                var subText = sub.textContent;
+                var subWords = subText.split(/\s+/);
+                sub.textContent = '';
+                subWords.forEach(function(word, idx) {
+                    var span = document.createElement('span');
+                    span.className = 'subtitle-word';
+                    span.textContent = word;
+                    span.style.transitionDelay = (200 + idx * 50) + 'ms';
+                    sub.appendChild(span);
+                    if (idx < subWords.length - 1) sub.appendChild(document.createTextNode(' '));
+                });
+                var subObs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.querySelectorAll('.subtitle-word').forEach(function(w) { w.classList.add('visible'); });
+                            subObs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                subObs.observe(sub);
+            }
+
+            (function() {
+                function wrapWords(root) {
+                    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                    var nodes = [];
+                    while (walker.nextNode()) nodes.push(walker.currentNode);
+                    nodes.forEach(function(node) {
+                        var text = node.textContent;
+                        var parts = text.split(/(\s+)/);
+                        if (parts.length < 2) return;
+                        var frag = document.createDocumentFragment();
+                        for (var i = 0; i < parts.length; i++) {
+                            if (parts[i].trim() === '') { frag.appendChild(document.createTextNode(parts[i])); }
+                            else { var span = document.createElement('span'); span.className = 'hover-word'; span.textContent = parts[i]; frag.appendChild(span); }
+                        }
+                        node.parentNode.replaceChild(frag, node);
+                    });
+                }
+                var targets = testimonials.querySelectorAll('h1, h2, h3, h4, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+                targets.forEach(function(el) {
+                    if (!el || el.closest('.hover-word') || el.querySelector('.hover-word') || el.querySelector('.letter-span')) return;
+                    wrapWords(el);
+                });
+            })();
+        })();
+
+        /* ── FAQ Section Animations ── */
+        (function() {
+            var faq = document.querySelector('.py-5.mb-5');
+            if (!faq) faq = document.getElementById('faqSection');
+
+            var title = document.getElementById('faqTitle');
+            if (title && !title.classList.contains('letter-cascaded')) {
+                title.classList.add('letter-cascaded');
+                var text = title.textContent;
+                title.textContent = '';
+                for (var i = 0; i < text.length; i++) {
+                    var ch = text[i];
+                    if (ch === ' ') { var sp = document.createElement('span'); sp.className = 'letter-span'; sp.innerHTML = '&nbsp;'; title.appendChild(sp); }
+                    else { var span = document.createElement('span'); span.className = 'letter-span'; span.textContent = ch; title.appendChild(span); }
+                }
+                var letters = title.querySelectorAll('.letter-span');
+                var obs = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            letters.forEach(function(span, idx) { setTimeout(function() { span.classList.add('visible'); }, idx * 40); });
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.3 });
+                obs.observe(title);
+            }
+
+            if (faq) {
+                (function() {
+                    function wrapWords(root) {
+                        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                        var nodes = [];
+                        while (walker.nextNode()) nodes.push(walker.currentNode);
+                        nodes.forEach(function(node) {
+                            var text = node.textContent;
+                            var parts = text.split(/(\s+)/);
+                            if (parts.length < 2) return;
+                            var frag = document.createDocumentFragment();
+                            for (var i = 0; i < parts.length; i++) {
+                                if (parts[i].trim() === '') { frag.appendChild(document.createTextNode(parts[i])); }
+                                else { var span = document.createElement('span'); span.className = 'hover-word'; span.textContent = parts[i]; frag.appendChild(span); }
+                            }
+                            node.parentNode.replaceChild(frag, node);
+                        });
+                    }
+                    var targets = faq.querySelectorAll('h1, h2, h3, h4, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+                    targets.forEach(function(el) {
+                        if (!el || el.closest('.hover-word') || el.querySelector('.hover-word') || el.querySelector('.letter-span')) return;
+                        wrapWords(el);
+                    });
+                })();
+            }
+        })();
+
+        /* ── Portfolio Section Word-Wrap ── */
+        (function() {
+            var portfolio = document.getElementById('portfolio');
+            if (!portfolio) return;
+            function wrapWords(root) {
+                var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+                var nodes = [];
+                while (walker.nextNode()) nodes.push(walker.currentNode);
+                nodes.forEach(function(node) {
+                    var text = node.textContent;
+                    var parts = text.split(/(\s+)/);
+                    if (parts.length < 2) return;
+                    var frag = document.createDocumentFragment();
+                    for (var i = 0; i < parts.length; i++) {
+                        if (parts[i].trim() === '') { frag.appendChild(document.createTextNode(parts[i])); }
+                        else { var span = document.createElement('span'); span.className = 'hover-word'; span.textContent = parts[i]; frag.appendChild(span); }
+                    }
+                    node.parentNode.replaceChild(frag, node);
+                });
+            }
+            var targets = portfolio.querySelectorAll('h1, h2, h3, h4, p, span, li, a, label, small, strong, em, blockquote, figcaption');
+            targets.forEach(function(el) {
+                if (!el || el.closest('.hover-word') || el.querySelector('.hover-word')) return;
+                wrapWords(el);
+            });
+        })();
+
+        /* ── Trophy Icon click (bounce + sparkle) ── */
+        (function() {
+            var wrap = document.querySelector('.trophy-icon-wrap');
+            if (!wrap) return;
+            wrap.addEventListener('click', function(e) {
+                wrap.classList.remove('trophy-bounce');
+                void wrap.offsetWidth;
+                wrap.classList.add('trophy-bounce');
+                var sparkleCount = 8;
+                var rect = wrap.getBoundingClientRect();
+                var cx = rect.left + rect.width / 2;
+                var cy = rect.top + rect.height / 2;
+                for (var i = 0; i < sparkleCount; i++) {
+                    var dot = document.createElement('div');
+                    dot.className = 'trophy-sparkle';
+                    var angle = (i / sparkleCount) * Math.PI * 2;
+                    var dist = 40 + Math.random() * 30;
+                    var dx = Math.cos(angle) * dist;
+                    var dy = Math.sin(angle) * dist;
+                    dot.style.setProperty('--dx', dx + 'px');
+                    dot.style.setProperty('--dy', dy + 'px');
+                    dot.style.left = cx + 'px';
+                    dot.style.top = cy + 'px';
+                    document.body.appendChild(dot);
+                    dot.addEventListener('animationend', function() { this.remove(); });
+                }
+            });
+        })();
     </script>
 }
 
@@ -590,7 +1091,7 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-4">
-                <h2 class="fw-bold fs-1 mb-4 pe-lg-4">Discover Frequently Asked Questions?</h2>
+                <h2 class="fw-bold fs-1 mb-4 pe-lg-4" id="faqTitle">Discover Frequently Asked Questions?</h2>
                 <a href="#contact" class="btn btn-primary px-4 py-2">WORK TOGETHER</a>
             </div>
             <div class="col-lg-8">
@@ -626,12 +1127,13 @@
 </section>
 
 <!-- Testimonials Section -->
-<section id="testimonials" class="py-5 bg-light">
+<section id="testimonials" class="py-5 bg-light sweep-section" style="position: relative; overflow: hidden;">
+    <canvas id="testimonialsSweepCanvas" class="section-sweep-canvas"></canvas>
     <div class="container py-5">
         <div class="text-center mb-5">
-            <span class="text-primary fw-bold mb-2 d-block" data-aos="fade-down"><i class="fa-solid fa-minus me-2"></i>Testimonials<i class="fa-solid fa-minus ms-2"></i></span>
-            <h2 class="fw-bold fs-1 mb-3" data-aos="fade-up">What Our Clients Say</h2>
-            <p class="text-secondary mx-auto" style="max-width: 600px;" data-aos="fade-up" data-aos-delay="100">
+            <span class="text-primary fw-bold mb-2 d-block" data-aos="fade-down" id="testimonialsSubtitle"><i class="fa-solid fa-minus me-2"></i>Testimonials<i class="fa-solid fa-minus ms-2"></i></span>
+            <h2 class="fw-bold fs-1 mb-3" data-aos="fade-up" id="testimonialsTitle">What Our Clients Say</h2>
+            <p class="text-secondary mx-auto" style="max-width: 600px;" data-aos="fade-up" data-aos-delay="100" id="testimonialsDesc">
                 Our clients' success is our best introduction. Discover how we have helped other brands scale and transform their digital businesses.
             </p>
         </div>
@@ -681,6 +1183,66 @@
                     </div>
                 </div>
             }
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Section -->
+<section id="portfolio" class="py-5 my-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <span class="text-primary fw-bold mb-2 d-block" data-aos="fade-down">-Our Portfolio-</span>
+            <h2 class="fw-bold fs-1 mb-3" id="portfolioHomeTitle" data-aos="fade-up">Featured Projects</h2>
+            <p class="text-secondary mx-auto" style="max-width: 500px;" data-aos="fade-up" data-aos-delay="100">
+                A selection of our latest and greatest work.
+            </p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            @if (Model != null && Model.Projects != null && Model.Projects.Any())
+            {
+                var delays = new[] { 0, 150, 300 };
+                for (int i = 0; i < Model.Projects.Count(); i++)
+                {
+                    var project = Model.Projects.ElementAt(i);
+                    var delay = i < delays.Length ? delays[i] : 300;
+                    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="@delay">
+                        <div class="portfolio-card h-100">
+                            @if (!string.IsNullOrEmpty(project.ImageUrl))
+                            {
+                                <div class="portfolio-card-image">
+                                    <img src="@project.ImageUrl" alt="@project.Title">
+                                    <div class="portfolio-card-overlay"></div>
+                                </div>
+                            }
+                            <div class="portfolio-card-body">
+                                <span class="portfolio-date text-secondary small">@project.CompletedAt.ToString("MMM yyyy")</span>
+                                <h5 class="fw-bold mt-2 mb-1">
+                                    <a asp-controller="Portfolio" asp-action="Details" asp-route-slug="@project.Slug" class="text-dark text-decoration-none">@project.Title</a>
+                                </h5>
+                                <span class="text-secondary small">@project.Client</span>
+                                @if (!string.IsNullOrEmpty(project.Technologies))
+                                {
+                                    <div class="mt-2 d-flex flex-wrap gap-1">
+                                        @foreach (var tech in project.Technologies.Split(','))
+                                        {
+                                            <span class="portfolio-tech-tag">@tech.Trim()</span>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center py-5">
+                    <p class="text-secondary">No projects yet. Check back soon!</p>
+                </div>
+            }
+        </div>
+        <div class="text-center mt-5">
+            <a asp-controller="Portfolio" asp-action="Index" class="btn btn-primary px-4 py-2 btn-premium">VIEW ALL PROJECTS</a>
         </div>
     </div>
 </section>
